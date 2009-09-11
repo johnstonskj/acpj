@@ -1,0 +1,189 @@
+<html>
+<!-- 
+ * Licensed Materials - Property of Simon Johnston (simon@johnstonshome.org)
+ * (c) Copyright Simon Johnston 2009. All rights reserved.
+ * 
+ * For full license details, see the file LICENSE included in the
+ * distribution of this code.
+ * -->
+<head/>
+<body>
+
+<p>
+  The ACP/J library provides a set of useful tools to Java programmers for building
+  concurrent applications using proven techniques such as the actor model, the CSP 
+  communication model and Ports. In the library are both the fundamental components
+  as well as services inspired by the Erlang OTP and also common communication
+  patterns codified into utility classes.  
+</p>
+
+<h3>Description</h3>
+
+<p>
+  The ACP/J project is an attempt to bring together three ideas into a coherent 
+  library for developing concurrent applications in Java. Note that bringing these
+  concepts together enhances the ability of each model to assist the developer in
+  writing concurrent applications, the details of this synergy are outlined below.
+</p>
+
+<ol>
+  <li>Actors provide lightweight processes in a similar way to Erlang and Scala.</li>
+  <li>Channels provide communication paths, based on CSP, connecting Actors.</li>
+  <li>Ports provide the mechanism to control access to channels.</li>
+</ol>
+
+<p>
+</p>
+
+<p>
+  For more information see the project home page 
+  <a href="http://acpj.googlecode.com/">acpj.googlecode.com</a>.
+</p>
+
+<p>
+  With the growing understanding that the next major move in application programming
+  is to take advantage of the new multi-core world we live in where even the most basic
+  computer these days has a multi-core CPU and possibly even a heterogeneous processor
+  environment where the programmer can take advantage of both CPU and GPU. The rise 
+  in interest of languages such as <a href="hhtp://www.erlang.org">Erlang</a> that 
+  provides a coherent model for developing safe concurrent software, the addition to
+  the <a href="http://www.scala-lang.org/">Scala</a> language of an actor model based
+  on Erlang shows how this trend is spreading out in both understanding and implementation.
+</p>
+
+<p>
+  In looking at how processes communicate we know that the use of low-level primitives
+  such as Threads, Semaphores, Locks and Monitors are error-prone and hard to verify.
+  To this end Erlang supports the notion that every actor has a mailbox that other actors
+  can write to and the owning actor can read from. This simple concurrency model is 
+  extremely valuable but can be cumbersome in modeling some real-world problems where
+  communication is not point-to-point. In this way the Communicating Sequential
+  Processes (CSP) model is in many ways superior as it provides a formal and concrete
+  formalism with a set of useful abstractions for communication such as the one-to-one,
+  one-to-any, any-to-one and any-to-any channels along with the notion of channel buffering 
+  (or not), channel poisoning and more.
+</p>
+
+<p>
+  However, in many implementations of CSP abstract notions into Java (and other languages)
+  tend to focus on the implementation of the channel itself and simply provide methods on
+  the channel to get a reader and/or writer for the processes involved to send and receive
+  messages. The issue is that many systems need additional control over the access to a 
+  channel, and while stating that a channel is one-to-one is useful in disallowing multiple
+  processes to write to the same channel we might want to be able to limit the number of 
+  messages allowed to be sent or by whom.
+</p>
+
+<p>
+  To this end the ACP/J library brings together these three ideas and blends them into a 
+  coherent set of abstractions so that the strengths of each can be enhanced by the others.
+</p>
+
+<h3>Example</h3>
+
+<p>
+  The code in the following example creates three actors, one which generates a series of
+  random numbers between 0 and 100 and writes them out to a channel. Another process reads
+  numbers from a channel and prints them. However, while we could have these two share the
+  same channel and print out all the numbers generated we only want to print numbers 
+  greater than 50 so we use the <em>Channel Filter</em> pattern to inject another actor 
+  that reads the channel of all numbers, filters out the unwanted ones and passes the rest
+  on to the printing actor.
+</p>
+
+<pre>
+    public class RandomNumberGenerator implements Runnable {
+        private WritePort<Integer> writePort = null;
+        private int count = 0;
+        public RandomNumberGenerator(WritePort<Integer> writePort, int count) {
+            this.writePort = writePort;
+            this.count = count;
+        }
+        public void run() {
+            writePort.claim();
+            Random random = new Random();
+            for (int i = 0; i < this.count; i++) {
+                writePort.write(new Integer(random.nextInt(100)));
+            }
+            writePort.poison();
+        }
+    }
+    
+    public class NumberFilter implements ChannelOperation<Integer, Integer> {
+        public Integer process(Integer message) {
+            if (message.intValue() < 50) {
+                return null;
+            } else {
+                return message;
+            }
+        }        
+    }
+    
+    public class NumberPrinter implements Runnable {
+        private ReadPort<Integer> readPort = null;
+        public NumberPrinter(ReadPort<Integer> readPort) {
+            this.readPort = readPort;
+        }
+        public void run() {
+            try {
+                readPort.claim();
+                while (true) {
+                    try {
+                        Integer number = readPort.read();
+                        System.out.println("Received " + number);
+                    } catch (ChannelPoisonedException e) {
+                        break;
+                    }
+                }
+            } catch (Throwable t) {
+                t.printStackTrace();
+            }
+        }
+    }
+    
+    WatchdogService.start();
+        
+    Channel<Integer> rawChannel = ChannelFactory.getInstance().createOneToOneChannel(); 
+    Channel<Integer> filteredChannel = ChannelFactory.getInstance().createOneToOneChannel();
+        
+    ActorFactory.getInstance().createActor(new NumberPrinter(filteredChannel.getReadPort(false)), "NumberPrinter");
+    ActorFactory.getInstance().createActor(new ChannelFilter<Integer, Integer>(rawChannel.getReadPort(false), filteredChannel.getWritePort(false), new NumberFilter(), true), "ChannelFilter");
+    ActorFactory.getInstance().createActor(new RandomNumberGenerator(rawChannel.getWritePort(false), 50), "RandomNumberGenerator");
+        
+    Thread.sleep(1000);
+</pre>
+
+<p>
+  The following provides some more details.
+</p>
+
+<ul>
+  <li>Note that actors are coded simply as Java classes that implement the 
+      {@link java.lang.Runnable} interface, in the same way you create
+      thread classes today. <code>RandomNumberGenerator</code>, 
+      <code>NumberFilter</code> and <code>NumberPrinter</code> are all
+      implementations of {@link java.lang.Runnable} with constructors
+      that take one or more {@link com.googlecode.acpj.channels.Port Ports}.</li>
+  <li>Note that the readers simply read forever, but that the writer has a
+      particular way to communicate that all work is done, the 
+      <code>RandomNumberGenerator</code> actor poisons the channel it is 
+      writing to which renders the channel unusable from that point on, and
+      this poison propogates through the filter and to the printing actor.</li>
+  <li>In the code that starts up the network note that we first start the 
+      {@link com.googlecode.acpj.services.WatchdogService} which
+      is a monitor that reports the birth and death of all actors and allows
+      us to tell if an actor died due to an exception.</li>
+  <li>The network consists of two one-to-one 
+      {@link com.googlecode.acpj.channels.Channel Channels}, each of these by 
+      default allows multiple read or write operations per
+      {@link com.googlecode.acpj.channels.Port} and the channel itself is
+      unbuffered.</li>
+  <li>Finally the three actors are created using the 
+      {@link com.googlecode.acpj.actors.ActorFactory} so that the actual details
+      of the actor concurrency implementation is left as an implementation
+      choice.</li>
+</ul>
+
+
+</body>
+</html>  

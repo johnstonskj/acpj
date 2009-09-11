@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project default="javadoc">
+  <target name="javadoc">
+  <javadoc 
+  	access="public" 
+  	author="true" 
+  	classpath="/Users/simon/Applications/eclipse/plugins/org.junit_3.8.2.v20080602-1318/junit.jar" 
+  	destdir="./doc" 
+  	doctitle="Actors, Channels and Processes for Java" 
+  	nodeprecated="false" 
+  	nodeprecatedlist="false" 
+  	noindex="false" 
+  	nonavbar="false" 
+  	notree="false" 
+  	overview="./src/com/googlecode/acpj/overview.html" 
+  	packagenames="com.googlecode.acpj.channels,com.googlecode.acpj.actors,com.googlecode.acpj,com.googlecode.acpj.channels.util,com.googlecode.acpj.services,com.googlecode.acpj.services.logger" 
+  	source="1.5" 
+  	sourcepath="tests:src" 
+  	splitindex="true" 
+  	use="true" 
+  	version="true"/>
+  </target>
+</project>

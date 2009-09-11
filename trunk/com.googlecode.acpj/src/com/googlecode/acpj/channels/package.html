@@ -1,0 +1,66 @@
+<html>
+<!-- 
+ * Licensed Materials - Property of Simon Johnston (simon@johnstonshome.org)
+ * (c) Copyright Simon Johnston 2009. All rights reserved.
+ * 
+ * For full license details, see the file LICENSE included in the
+ * distribution of this code.
+ * -->
+<head/>
+<body>
+
+<p>
+Provides the API for constructing and manipulating Channels and Ports. 
+The API includes interfaces for the components of a channel 
+({@link com.googlecode.acpj.channels.Channel unbuffered channels},
+{@link com.googlecode.acpj.channels.BufferedChannel buffered channels},
+{@link com.googlecode.acpj.channels.ReadPort read ports} and 
+{@link com.googlecode.acpj.channels.WritePort write ports}) as well as a 
+{@link com.googlecode.acpj.channels.ChannelFactory factory class} to create new
+channels and a {@link com.googlecode.acpj.channels.ChannelRegistry channel registry}
+to allow dynamic discovery of well-known channels.
+</p>
+
+<p>
+The purpose of the channels package is to provide the core concepts for channels, the
+means by which actors safely and efficiently communicate and share information. 
+</p>
+
+<h2>What the <code>channels</code> Package Contains</h2>
+
+<ul>
+  <li>Constructing Channels and Ports:
+    <ul>
+      <li>{@link com.googlecode.acpj.channels.Channel} -- An unbuffered 
+          communication channel allowing a number of possible configurations
+          of readers/writers and port limits.</li>
+      <li>{@link com.googlecode.acpj.channels.BufferedChannel} -- A channel
+          that provides a buffered communication, with control over the 
+          maximum capacity.</li>
+      <li>{@link com.googlecode.acpj.channels.ChannelFactory} -- A factory object 
+          (implemented as a singleton) that creates new 
+          {@link com.googlecode.acpj.channels.Channel} and
+          {@link com.googlecode.acpj.channels.BufferedChannel} instances.</li>
+      <li>{@link com.googlecode.acpj.channels.Port} -- Represents a mechanism
+          with which to communicate over a channel.</li>
+      <li>{@link com.googlecode.acpj.channels.ReadPort} -- A port that allows
+          reading from a channel.</li>
+      <li>{@link com.googlecode.acpj.channels.WritePort} -- A port that allows
+          writing to a channel.</li>
+    </ul>
+  </li>
+  <li>Channel Discovery:
+    <ul>
+      <li>{@link com.googlecode.acpj.channels.ChannelRegistry} -- A shared
+          mapping from well-known names to channel instances to allow for
+          actors to discover registered channels.</li>
+    </ul>
+  </li>
+</ul>
+
+<p>
+@since 0.1.0
+</p>
+
+</body>
+</html>  
