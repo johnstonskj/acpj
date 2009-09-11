@@ -59,6 +59,10 @@ public class ExecutorBasedActor implements Actor, Runnable {
 		name = Thread.currentThread().getName();
 	}
 	
+	/*
+	 * (non-Javadoc)
+	 * @see com.googlecode.acpj.actors.Actor#getLocalId()
+	 */
 	public long getLocalId() {
 		return this.id;
 	}
@@ -67,6 +71,10 @@ public class ExecutorBasedActor implements Actor, Runnable {
 		this.id = id;
 	}
 	
+	/*
+	 * (non-Javadoc)
+	 * @see com.googlecode.acpj.actors.Actor#getName()
+	 */
 	public String getName() {
 		if (this.name == null) {
 			return String.format("actor:/%d", getLocalId());
@@ -75,10 +83,18 @@ public class ExecutorBasedActor implements Actor, Runnable {
 		}
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * @see com.googlecode.acpj.actors.Actor#isRunning()
+	 */
 	public boolean isRunning() {
 		return this.running;
 	}
 	
+	/*
+	 * (non-Javadoc)
+	 * @see java.lang.Runnable#run()
+	 */
 	public void run() {
 		try {
 			this.running = true;
@@ -89,11 +105,19 @@ public class ExecutorBasedActor implements Actor, Runnable {
 		}
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * @see java.lang.Object#hashCode()
+	 */
 	@Override
 	public int hashCode() {
 		return (int)getLocalId();
 	}
 	
+	/*
+	 * (non-Javadoc)
+	 * @see java.lang.Object#equals(java.lang.Object)
+	 */
 	@Override
 	public boolean equals(Object obj) {
 		if (!(obj instanceof ExecutorBasedActor)) {
@@ -101,7 +125,11 @@ public class ExecutorBasedActor implements Actor, Runnable {
 		}
 		return getLocalId() == ((ExecutorBasedActor)obj).getLocalId();
 	}
-	
+
+	/*
+	 * (non-Javadoc)
+	 * @see java.lang.Object#toString()
+	 */
 	@Override
 	public String toString() {
 		return getName();

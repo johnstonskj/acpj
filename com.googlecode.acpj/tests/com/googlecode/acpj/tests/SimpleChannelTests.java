@@ -266,14 +266,13 @@ public class SimpleChannelTests extends TestCase {
 		channel.poison();
 	}
 	
-	@SuppressWarnings("unchecked")
 	public void test005_SimpleRequestResponseTest() throws Exception {
 		System.out.println(String.format("===== %s =====", getName()));
 
 		ActorFactory.getInstance().createActor(new UuidServer());
 		Thread.sleep(500);
 		
-		Channel<Request<UUID>> requestChannel = (Channel<Request<UUID>>) ChannelRegistry.getInstance().lookupOrNull("test.uuid.server");
+		Channel<Request<UUID>> requestChannel = ChannelRegistry.getInstance().lookupOrNull("test.uuid.server");
 		WritePort<Request<UUID>> requestPort = requestChannel.getWritePort(true);
 
 		RequestWithCallbackPattern<Integer, UUID> guidRequestPattern = new RequestWithCallbackPattern<Integer, UUID>(); 

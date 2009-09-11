@@ -34,13 +34,16 @@ class WatchdogServiceActor implements Runnable {
 		this.watchdogPort = watchdogPort;
 	}
 	
-	@SuppressWarnings("unchecked")
+	/*
+	 * (non-Javadoc)
+	 * @see java.lang.Runnable#run()
+	 */
 	public void run() {
 		Channel<LogRecord> loggerChannel = null;
 		WritePort<LogRecord> loggerPort = null;
 		while (true) {
 			if (loggerChannel == null) {
-				loggerChannel = (Channel<LogRecord>) ChannelRegistry.getInstance().lookupOrNull(LogService.CHANNEL_NAME);
+				loggerChannel = ChannelRegistry.getInstance().lookupOrNull(LogService.CHANNEL_NAME);
 				if (loggerChannel != null) {
 					loggerPort = loggerChannel.getWritePort(true);
 				}

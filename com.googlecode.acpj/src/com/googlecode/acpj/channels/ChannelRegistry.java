@@ -81,7 +81,7 @@ public abstract class ChannelRegistry {
 	 * @throws IllegalArgumentException 
 	 * @throws UnknownError the public name has not been registered.
 	 */
-	public abstract Channel<?> lookup(String publicName) throws IllegalArgumentException, UnknownError;
+	public abstract <T> Channel<T> lookup(String publicName) throws IllegalArgumentException, UnknownError;
 	
 	/**
 	 * Find the channel associated with the public name, this assumes the channel
@@ -93,5 +93,5 @@ public abstract class ChannelRegistry {
 	 * 
 	 * @throws IllegalArgumentException 
 	 */
-	public abstract Channel<?> lookupOrNull(String publicName) throws IllegalArgumentException;
+	public abstract <T> Channel<T> lookupOrNull(String publicName) throws IllegalArgumentException;
 }

@@ -53,23 +53,43 @@ public class ThreadBasedActor implements Actor {
 		this.thread = Thread.currentThread();
 	}
 	
+	/*
+	 * (non-Javadoc)
+	 * @see com.googlecode.acpj.actors.Actor#getLocalId()
+	 */
 	public long getLocalId() {
 		return this.thread.getId();
 	}
 	
+	/*
+	 * (non-Javadoc)
+	 * @see com.googlecode.acpj.actors.Actor#getName()
+	 */
 	public String getName() {
 		return this.thread.getName();
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * @see com.googlecode.acpj.actors.Actor#isRunning()
+	 */
 	public boolean isRunning() {
 		return this.thread.isAlive();
 	}
 	
+	/*
+	 * (non-Javadoc)
+	 * @see java.lang.Object#hashCode()
+	 */
 	@Override
 	public int hashCode() {
 		return this.thread.hashCode();
 	}
 	
+	/*
+	 * (non-Javadoc)
+	 * @see java.lang.Object#equals(java.lang.Object)
+	 */
 	@Override
 	public boolean equals(Object obj) {
 		if (!(obj instanceof ThreadBasedActor)) {
@@ -77,7 +97,11 @@ public class ThreadBasedActor implements Actor {
 		}
 		return this.thread.equals(((ThreadBasedActor)obj).thread);
 	}
-	
+
+	/*
+	 * (non-Javadoc)
+	 * @see java.lang.Object#toString()
+	 */
 	@Override
 	public String toString() {
 		return getName();

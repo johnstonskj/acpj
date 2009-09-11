@@ -47,8 +47,9 @@ public class DefaultChannelRegistry extends ChannelRegistry {
 	 * (non-Javadoc)
 	 * @see com.googlecode.acpj.channels.ChannelRegistry#lookup(java.lang.String)
 	 */
-	public Channel<?> lookup(String publicName) throws IllegalArgumentException, UnknownError {
-		Channel<?> channel = lookupOrNull(publicName);
+	@SuppressWarnings("unchecked")
+	public <T> Channel<T> lookup(String publicName) throws IllegalArgumentException, UnknownError {
+		Channel<T> channel = (Channel<T>) lookupOrNull(publicName);
 		if (channel == null) {
 			throw new UnknownError(String.format("No registry with key '%s'", publicName));
 		}
@@ -59,10 +60,11 @@ public class DefaultChannelRegistry extends ChannelRegistry {
 	 * (non-Javadoc)
 	 * @see com.googlecode.acpj.channels.ChannelRegistry#lookupOrNull(java.lang.String)
 	 */
-	public Channel<?> lookupOrNull(String publicName) throws IllegalArgumentException {
+	@SuppressWarnings("unchecked")
+	public <T> Channel<T> lookupOrNull(String publicName) throws IllegalArgumentException {
 		if (publicName == null) {
 			throw new IllegalArgumentException("Channel name must not be null");
 		}
-		return registry.get(publicName);
+		return (Channel<T>) registry.get(publicName);
 	}
 }
