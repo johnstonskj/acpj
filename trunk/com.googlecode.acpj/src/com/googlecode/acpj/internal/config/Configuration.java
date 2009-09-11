@@ -18,6 +18,9 @@ import com.googlecode.acpj.internal.channels.DefaultChannelRegistry;
 
 /**
  * <p>
+ * Internal - used to retrieve configurable properties, will look in system 
+ * properties first then use local defaults. This might even become a 3-tier
+ * system by adding a properties file.
  * </p>
  * 
  * @author Simon Johnston (simon@johnstonshome.org)

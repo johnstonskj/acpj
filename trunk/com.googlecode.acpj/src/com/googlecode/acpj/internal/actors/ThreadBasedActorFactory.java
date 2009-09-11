@@ -13,6 +13,8 @@ import com.googlecode.acpj.actors.ActorFactory;
 
 /**
  * <p>
+ * Internal - implementation of {@link com.googlecode.acpj.actors.ActorFactory} for
+ * use with standard Java Threads.
  * </p>
  * 
  * @author Simon Johnston (simon@johnstonshome.org)

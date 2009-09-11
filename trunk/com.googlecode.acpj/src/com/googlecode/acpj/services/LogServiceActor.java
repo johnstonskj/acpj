@@ -17,6 +17,7 @@ import com.googlecode.acpj.channels.ReadPort;
 
 /**
  * <p>
+ * Internal - actor that implements the Logger service itself.
  * </p>
  * 
  * @author Simon Johnston (simon@johnstonshome.org)

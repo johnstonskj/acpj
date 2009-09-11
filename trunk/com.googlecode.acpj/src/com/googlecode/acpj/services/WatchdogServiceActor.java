@@ -19,6 +19,7 @@ import com.googlecode.acpj.channels.WritePort;
 
 /**
  * <p>
+ * Internal - actor that implements the Watchdog service itself.
  * </p>
  * 
  * @author Simon Johnston (simon@johnstonshome.org)

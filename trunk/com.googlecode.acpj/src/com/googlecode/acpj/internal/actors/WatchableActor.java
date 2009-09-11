@@ -1,3 +1,11 @@
+/*
+ * Licensed Materials - Property of Simon Johnston (simon@johnstonshome.org)
+ * (c) Copyright Simon Johnston 2009. All rights reserved.
+ * 
+ * For full license details, see the file LICENSE included in the
+ * distribution of this code.
+ * 
+ */
 package com.googlecode.acpj.internal.actors;
 
 import com.googlecode.acpj.actors.Actor;
@@ -8,6 +16,16 @@ import com.googlecode.acpj.services.ActorState;
 import com.googlecode.acpj.services.ActorStateMessage;
 import com.googlecode.acpj.services.WatchdogService;
 
+/**
+ * <p>
+ * Internal - a class that wraps the Runnable the client gave us so that we can
+ * report lifecycle events to the Watchdog service.
+ * </p>
+ * 
+ * @author Simon Johnston (simon@johnstonshome.org)
+ * @since 0.1.0
+ * 
+ */
 public class WatchableActor implements Runnable {
 
 	private Actor actor;
