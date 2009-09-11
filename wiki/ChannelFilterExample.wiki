@@ -60,11 +60,14 @@ The code in the following example creates three actors, one which generates a se
     Channel filteredChannel = ChannelFactory.getInstance().createOneToOneChannel();
         
     ActorFactory.getInstance().createActor(
-        new NumberPrinter(filteredChannel.getReadPort(false)), "NumberPrinter");
+        new NumberPrinter(filteredChannel.getReadPort(false)), 
+        "NumberPrinter");
     ActorFactory.getInstance().createActor(
-        new ChannelFilter(rawChannel.getReadPort(false), filteredChannel.getWritePort(false), new NumberFilter(), true), "ChannelFilter");
+        new ChannelFilter(rawChannel.getReadPort(false), filteredChannel.getWritePort(false), new NumberFilter(), true), 
+        "ChannelFilter");
     ActorFactory.getInstance().createActor(
-        new RandomNumberGenerator(rawChannel.getWritePort(false), 50), "RandomNumberGenerator");
+        new RandomNumberGenerator(rawChannel.getWritePort(false), 50), 
+        "RandomNumberGenerator");
         
     Thread.sleep(1000);
 }}}
