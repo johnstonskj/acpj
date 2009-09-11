@@ -12,6 +12,8 @@ import com.googlecode.acpj.actors.Actor;
 
 /**
  * <p>
+ * Internal - implementation of {@link com.googlecode.acpj.actors.Actor} for
+ * use with standard Java Threads.
  * </p>
  * 
  * @author Simon Johnston (simon@johnstonshome.org)

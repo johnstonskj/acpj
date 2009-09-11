@@ -437,4 +437,31 @@ public class SimpleChannelTests extends TestCase {
 		channel.getWritePort(false);
 		channel.getWritePort(false);
 	}
+
+	public void test011_PortClosedRules() throws Exception {
+		System.out.println(String.format("===== %s =====", getName()));
+
+		Channel<String> channel = ChannelFactory.getInstance().createOneToOneChannel();
+		Assert.assertNotNull(channel);
+		
+		ReadPort<String> readPort = channel.getReadPort(true);
+		try {
+			channel.getReadPort(true);
+			fail("Port Arity rule check failed.");
+		} catch (ChannelException e) {
+			;
+		}
+		assertFalse(readPort.isClosed());
+		readPort.close();
+		assertTrue(readPort.isClosed());
+		readPort = channel.getReadPort(true);
+		assertFalse(readPort.isClosed());
+		try {
+			channel.getReadPort(true);
+			fail("Port Arity rule check failed.");
+		} catch (ChannelException e) {
+			;
+		}
+	}
+
 }

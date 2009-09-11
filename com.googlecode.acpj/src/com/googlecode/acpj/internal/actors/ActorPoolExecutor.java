@@ -18,6 +18,10 @@ import com.googlecode.acpj.actors.Actor;
 
 /**
  * <p>
+ * Internal - an extended form of the standard Java 
+ * {@link java.util.concurrent.ThreadPoolExecutor} which sets up the Thread-
+ * Local Storage correctly to support a <code>getCurrentActor</code> call 
+ * in the same way for Executor-started threads.
  * </p>
  * 
  * @author Simon Johnston (simon@johnstonshome.org)

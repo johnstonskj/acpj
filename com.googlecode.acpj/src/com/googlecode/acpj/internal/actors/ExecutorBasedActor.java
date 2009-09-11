@@ -12,6 +12,8 @@ import com.googlecode.acpj.actors.Actor;
 
 /**
  * <p>
+ * Internal - implementation of {@link com.googlecode.acpj.actors.Actor} for
+ * use with Executors.
  * </p>
  * 
  * @author Simon Johnston (simon@johnstonshome.org)
@@ -78,7 +80,6 @@ public class ExecutorBasedActor implements Actor, Runnable {
 	}
 	
 	public void run() {
-//		System.out.println("About to run " + getName());
 		try {
 			this.running = true;
 			new WatchableActor(this, this.actual).run();

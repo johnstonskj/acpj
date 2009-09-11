@@ -25,6 +25,9 @@ import com.googlecode.acpj.channels.WritePort;
 
 /**
  * <p>
+ * Internal - Common implementation for both the 
+ * {@link com.googlecode.acpj.channels.BufferedChannel} and
+ * {@link com.googlecode.acpj.channels.Channel} interfaces.
  * </p>
  * 
  * @author Simon Johnston (simon@johnstonshome.org)
@@ -59,8 +62,6 @@ public class SimpleChannel<T> implements BufferedChannel<T> {
 	private boolean poisoned = false;
 	
 	public SimpleChannel(String name, PortArity readPortArity, int readPortLimit, PortArity writePortArity, int writePortLimit, int capacity) {
-//		System.out.println(String.format("SimpleChannel(name=%s,readPortArity=%s, readPortLimit=%d, writePortArity=%s, writePortLimit=%d, capacity=%d",
-//				name, readPortArity, readPortLimit, writePortArity, writePortLimit, capacity));
 		if (name == null) {
 			this.name = String.format("channel:/%d", this.id);
 		} else {
@@ -100,7 +101,6 @@ public class SimpleChannel<T> implements BufferedChannel<T> {
 		}
 		T value = null;
 		try {
-//			System.out.println(String.format("Channel.read(%s) size=%d", getName(), size()));
 			Item<T> temp = values.take();
 			value = temp.data;
 		} catch (InterruptedException e) {
@@ -120,7 +120,6 @@ public class SimpleChannel<T> implements BufferedChannel<T> {
 			throw new IllegalArgumentException("Value may not be null.");
 		}
 		try {
-//			System.out.println(String.format("Channel.write(%s) size=%d", getName(), size()));
 			Item<T> temp = new Item<T>();
 			temp.data = value;
 			values.put(temp);

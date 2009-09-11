@@ -15,6 +15,7 @@ import com.googlecode.acpj.channels.ReadPort;
 
 /**
  * <p>
+ * Internal - implmementation of the {@link com.googlecode.acpj.channels.ReadPort} interface.
  * </p>
  * 
  * @author Simon Johnston (simon@johnstonshome.org)

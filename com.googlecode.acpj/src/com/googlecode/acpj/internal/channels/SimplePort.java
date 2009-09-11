@@ -16,6 +16,7 @@ import com.googlecode.acpj.channels.Port;
 
 /**
  * <p>
+ * Internal - implmementation of the {@link com.googlecode.acpj.channels.Port} interface.
  * </p>
  * 
  * @author Simon Johnston (simon@johnstonshome.org)
@@ -139,6 +140,10 @@ public class SimplePort<T> implements Port<T> {
 		getChannel().poison();		
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * @see com.googlecode.acpj.channels.Port#close()
+	 */
 	public void close() {
 		this.closed = true;
 		this.limit = 0;
@@ -147,6 +152,10 @@ public class SimplePort<T> implements Port<T> {
 		this.channel = null;
 	}
 	
+	/*
+	 * (non-Javadoc)
+	 * @see com.googlecode.acpj.channels.Port#isClosed()
+	 */
 	public boolean isClosed() {
 		return this.closed;
 	}

@@ -15,6 +15,8 @@ import com.googlecode.acpj.channels.ChannelRegistry;
 
 /**
  * <p>
+ * Internal - default implementation of the {@link com.googlecode.acpj.channels.ChannelRegistry} 
+ * interface.
  * </p>
  * 
  * @author Simon Johnston (simon@johnstonshome.org)
@@ -25,14 +27,26 @@ public class DefaultChannelRegistry extends ChannelRegistry {
 	
 	private static ConcurrentHashMap<String, Channel<?>> registry = new ConcurrentHashMap<String, Channel<?>>();
 
+	/*
+	 * (non-Javadoc)
+	 * @see com.googlecode.acpj.channels.ChannelRegistry#deregister(java.lang.String)
+	 */
 	public boolean deregister(String publicName) {
 		return (registry.remove(publicName) != null);
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * @see com.googlecode.acpj.channels.ChannelRegistry#register(com.googlecode.acpj.channels.Channel, java.lang.String, boolean)
+	 */
 	public boolean register(Channel<?> channel, String publicName, boolean remotable) {
 		return (registry.put(publicName, channel) == null);
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * @see com.googlecode.acpj.channels.ChannelRegistry#lookup(java.lang.String)
+	 */
 	public Channel<?> lookup(String publicName) throws IllegalArgumentException, UnknownError {
 		Channel<?> channel = lookupOrNull(publicName);
 		if (channel == null) {
@@ -41,6 +55,10 @@ public class DefaultChannelRegistry extends ChannelRegistry {
 		return channel;
 	}
 	
+	/*
+	 * (non-Javadoc)
+	 * @see com.googlecode.acpj.channels.ChannelRegistry#lookupOrNull(java.lang.String)
+	 */
 	public Channel<?> lookupOrNull(String publicName) throws IllegalArgumentException {
 		if (publicName == null) {
 			throw new IllegalArgumentException("Channel name must not be null");
