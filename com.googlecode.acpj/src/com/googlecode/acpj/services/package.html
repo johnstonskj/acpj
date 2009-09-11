@@ -1,0 +1,46 @@
+<html>
+<!-- 
+ * Licensed Materials - Property of Simon Johnston (simon@johnstonshome.org)
+ * (c) Copyright Simon Johnston 2009. All rights reserved.
+ * 
+ * For full license details, see the file LICENSE included in the
+ * distribution of this code.
+ * -->
+<head/>
+<body>
+
+<p>
+Provides pre-built services that can be used to monitor an application that
+has been built using actors, these services have been inspired by existing
+capabilities in the Erlang OTP platform. The package includes the ability to
+log messages (an Actor facade to Java logging) and a service to monitor and 
+log actor birth and death.  
+a
+</p>
+
+<p>
+The purpose of the  package is to provide a set of services that can be used
+by programmers to monitor their applications as the build and use actors. 
+</p>
+
+<h2>What the <code>rdf</code> Package Contains</h2>
+
+<ul>
+  <li>Services:
+    <ul>
+      <li>{@link com.googlecode.acpj.services.LogService} -- An actor-based
+          facade over the standard Java logging, allows LogRecord instances
+          to be sent to a common actor.</li>
+      <li>{@link com.googlecode.acpj.services.WatchdogService} -- A service
+          that monitors the events generated when any actor is created, 
+          terminates correctly or dies in an unexpected way.</li>
+    </ul>
+  </li>
+</ul>
+
+<p>
+@since 0.1.0
+</p>
+
+</body>
+</html>  

@@ -1,0 +1,51 @@
+<html>
+<!-- 
+ * Licensed Materials - Property of Simon Johnston (simon@johnstonshome.org)
+ * (c) Copyright Simon Johnston 2009. All rights reserved.
+ * 
+ * For full license details, see the file LICENSE included in the
+ * distribution of this code.
+ * -->
+<head/>
+<body>
+
+<p>
+Provides the API for constructing and manipulating Actors. The API includes 
+a factory for creating new actor instances and the interface that describes
+an actor instance. The interface for an {@link com.googlecode.acpj.actors.Actor}
+is considerably smaller than
+that used in the usual Java {@link java.lang.Thread}, in particular it does
+not provide <code>start()</code> or <code>stop()</code> methods, this allows
+more flexibility in the implementation of {@link com.googlecode.acpj.actors.Actor actors} 
+and does not predetermine the use of existing Threads for example.
+</p>
+
+<p>
+The purpose of the actors package is to provide a description of an Actor and a 
+factory for creating new actors based on implementations of the standard
+Java {@link java.lang.Runnable} interface. This approach is much the same
+as standard Java Thread programming except that the implementation of the 
+{@link com.googlecode.acpj.actors.Actor} is hidden behind the 
+{@link com.googlecode.acpj.actors.ActorFactory}. 
+</p>
+
+<h2>What the <code>actors</code> Package Contains</h2>
+
+<ul>
+  <li>Constructing Actors:
+    <ul>
+      <li>{@link com.googlecode.acpj.actors.Actor} -- The interface describing the capabilities 
+          for an actor instance.</li>
+      <li>{@link com.googlecode.acpj.actors.ActorFactory} -- A factory object (implemented
+          as a singleton) that creates new {@link com.googlecode.acpj.actors.Actor}
+          instances from the provided {@link java.lang.Runnable} object.</li>
+    </ul>
+  </li>
+</ul>
+
+<p>
+@since 0.1.0
+</p>
+
+</body>
+</html>  

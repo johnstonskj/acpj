@@ -1,0 +1,51 @@
+<html>
+<!-- 
+ * Licensed Materials - Property of Simon Johnston (simon@johnstonshome.org)
+ * (c) Copyright Simon Johnston 2009. All rights reserved.
+ * 
+ * For full license details, see the file LICENSE included in the
+ * distribution of this code.
+ * -->
+<head/>
+<body>
+
+<p>
+Provides utility classes that implement common patterns in CSP and Actor-based
+applications. The package includes patterns based on common actor functions 
+such as message filtering, message logging, statistics and so forth. These are
+provided as simple reusable classes and patterns that can be tailored and 
+extended for additional purposes.
+</p>
+
+<p>
+The purpose of the utils package is to provide common building blocks to allow
+the programmer to reuse simple actors where possible for common tasks and also
+to provide these as the foundation to build new patterns, either reusing the
+provided actors as they are or to extend them into new function. 
+</p>
+
+<h2>What the <code>util</code> Package Contains</h2>
+
+<ul>
+  <li>Patterns:
+    <ul>
+      <li>{@link com.googlecode.acpj.channels.util.RequestWithCallbackPattern} -- A 
+          common pattern where one actor makes a request for some service to another
+          actor and has to provide in the request a callback port for the result to
+          be sent to.</li>
+      <li>{@link com.googlecode.acpj.channels.util.ChannelOperation} -- An interface 
+          that represents a simple, but powerful function that can filter messages
+          between two actors, transform the messages or simply monitor them.</li>
+      <li>{@link com.googlecode.acpj.channels.util.ChannelFilter} -- An Actor that
+          uses a ChannelOperation as a filter and filters the messages between 
+          two actors.</li>
+    </ul>
+  </li>
+</ul>
+
+<p>
+@since 0.1.0
+</p>
+
+</body>
+</html>  
