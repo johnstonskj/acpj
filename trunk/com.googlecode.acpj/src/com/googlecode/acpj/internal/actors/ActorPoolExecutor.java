@@ -41,6 +41,10 @@ public class ActorPoolExecutor extends ThreadPoolExecutor {
 		super(corePoolSize, maximumPoolSize, keepAliveTime, unit, workQueue);
 	}
 	
+	/*
+	 * (non-Javadoc)
+	 * @see java.util.concurrent.ThreadPoolExecutor#beforeExecute(java.lang.Thread, java.lang.Runnable)
+	 */
 	@Override
 	protected void beforeExecute(Thread t, Runnable r) {
 		super.beforeExecute(t, r);
@@ -53,6 +57,10 @@ public class ActorPoolExecutor extends ThreadPoolExecutor {
 		}
 	}
 	
+	/*
+	 * (non-Javadoc)
+	 * @see java.util.concurrent.ThreadPoolExecutor#afterExecute(java.lang.Runnable, java.lang.Throwable)
+	 */
 	@Override
 	protected void afterExecute(Runnable r, Throwable t) {
 		super.afterExecute(r, t);

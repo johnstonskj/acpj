@@ -59,9 +59,8 @@ public class EndToEndTests extends TestCase {
 		public NumberGenerator(int id) {
 			this.id = id;
 		}
-		@SuppressWarnings("unchecked")
 		public void run() {
-			Channel<LogRecord> logChannel = (Channel<LogRecord>) ChannelRegistry.getInstance().lookup("com.googlecode.acpj.logger");
+			Channel<LogRecord> logChannel = ChannelRegistry.getInstance().lookup("com.googlecode.acpj.logger");
 			WritePort<LogRecord> writePort = logChannel.getWritePort(true);
 			for (int i = 0; i < 10; i++) {
 				writePort.write(new LogRecord(1, String.format("A number, %d, from %d", i, id)));

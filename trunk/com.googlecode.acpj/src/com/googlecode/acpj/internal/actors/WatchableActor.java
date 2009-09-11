@@ -36,9 +36,12 @@ public class WatchableActor implements Runnable {
 		this.actual = actual;
 	}
 	
-	@SuppressWarnings("unchecked")
+	/*
+	 * (non-Javadoc)
+	 * @see java.lang.Runnable#run()
+	 */
 	public void run() {
-		Channel<ActorStateMessage> watchdogChannel = (Channel<ActorStateMessage>) ChannelRegistry.getInstance().lookupOrNull(WatchdogService.CHANNEL_NAME);
+		Channel<ActorStateMessage> watchdogChannel = ChannelRegistry.getInstance().lookupOrNull(WatchdogService.CHANNEL_NAME);
 		WritePort<ActorStateMessage> watchdogPort = null;
 		if (watchdogChannel != null) {
 			watchdogPort = watchdogChannel.getWritePort(true);

@@ -34,6 +34,10 @@ class LogServiceActor implements Runnable {
 		this.loggerPort = loggerPort;
 	}
 	
+	/*
+	 * (non-Javadoc)
+	 * @see java.lang.Runnable#run()
+	 */
 	public void run() {
 		try {
 			loggerPort.claim();

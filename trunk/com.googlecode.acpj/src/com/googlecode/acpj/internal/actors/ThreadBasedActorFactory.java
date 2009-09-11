@@ -23,14 +23,26 @@ import com.googlecode.acpj.actors.ActorFactory;
  */
 public class ThreadBasedActorFactory extends ActorFactory {
 
+	/*
+	 * (non-Javadoc)
+	 * @see com.googlecode.acpj.actors.ActorFactory#createActor(java.lang.Runnable)
+	 */
 	public Actor createActor(Runnable runnable) {
 		return new ThreadBasedActor(runnable);
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * @see com.googlecode.acpj.actors.ActorFactory#createActor(java.lang.Runnable, java.lang.String)
+	 */
 	public Actor createActor(Runnable runnable, String name) {
 		return new ThreadBasedActor(runnable, name);
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * @see com.googlecode.acpj.actors.ActorFactory#getCurrentActor()
+	 */
 	public Actor getCurrentActor() {
 		return new ThreadBasedActor();
 	}
