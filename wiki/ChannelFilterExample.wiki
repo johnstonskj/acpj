@@ -74,8 +74,8 @@ The code in the following example creates three actors, one which generates a se
 
 The following provides some more details.
 
-  *Note that actors are coded simply as Java classes that implement the Runnable interface, in the same way you create thread classes today. !RandomNumberGenerator, !NumberFilter and !NumberPrinter are all implementations of Runnable with constructors that take one or more Ports.
-  *Note that the readers simply read forever, but that the writer has a particular way to communicate that all work is done, the !RandomNumberGenerator actor poisons the channel it is writing to which renders the channel unusable from that point on, and this poison propogates through the filter and to the printing actor.
+  * Note that actors are coded simply as Java classes that implement the Runnable interface, in the same way you create thread classes today. !RandomNumberGenerator, !NumberFilter and !NumberPrinter are all implementations of Runnable with constructors that take one or more Ports.
+  * Note that the readers simply read forever, but that the writer has a particular way to communicate that all work is done, the !RandomNumberGenerator actor poisons the channel it is writing to which renders the channel unusable from that point on, and this poison propogates through the filter and to the printing actor.
   * In the code that starts up the network note that we first start the !WatchdogService which is a monitor that reports the birth and death of all actors and allows us to tell if an actor died due to an exception.
   * The network consists of two one-to-one Channels, each of these by default allows multiple read or write operations per Port and the channel itself is unbuffered.
   * Finally the three actors are created using the !ActorFactory so that the actual details of the actor concurrency implementation is left as an implementation choice.
