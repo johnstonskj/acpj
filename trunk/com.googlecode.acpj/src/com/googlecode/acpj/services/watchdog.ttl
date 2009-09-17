@@ -1,0 +1,14 @@
+@prefix acp: <http://acpj.googlecode.com/vocab#> .
+@prefix svc: <http://acpj.googlecode.com/services#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+svc:WatchdogService 
+	a 					acp:Service ;
+	acp:startup			"auto" ;
+	acp:actorName 		"com.googlecode.acpj.services.WatchdogServiceActor" ;
+	acp:actorClassName 	"com.googlecode.acpj.services.WatchdogServiceActor" ;
+	acp:requestChannel	[
+		acp:channelName		"com.googlecode.acpj.services.NotificationChannel" ;
+		acp:channelCapacity "-1"^^xsd:integer ;
+		acp:remoteable		"false"^^xsd:boolean
+	] .

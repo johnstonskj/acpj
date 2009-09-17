@@ -6,11 +6,10 @@
  * distribution of this code.
  * 
  */
-package com.googlecode.acpj.channels.monitor;
+package com.googlecode.acpj.channels;
 
 import java.util.Iterator;
 
-import com.googlecode.acpj.channels.PortArity;
 
 /**
  * <p>

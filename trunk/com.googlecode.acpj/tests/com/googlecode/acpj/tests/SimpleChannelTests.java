@@ -16,16 +16,17 @@ import com.googlecode.acpj.actors.ActorFactory;
 import com.googlecode.acpj.channels.Channel;
 import com.googlecode.acpj.channels.ChannelException;
 import com.googlecode.acpj.channels.ChannelFactory;
+import com.googlecode.acpj.channels.ChannelMonitorOutput;
 import com.googlecode.acpj.channels.ChannelPoisonedException;
 import com.googlecode.acpj.channels.ChannelRegistry;
 import com.googlecode.acpj.channels.PortArity;
 import com.googlecode.acpj.channels.ReadPort;
 import com.googlecode.acpj.channels.WritePort;
-import com.googlecode.acpj.channels.monitor.ChannelMonitorOutput;
 import com.googlecode.acpj.channels.util.ChannelFilter;
 import com.googlecode.acpj.channels.util.ChannelOperation;
 import com.googlecode.acpj.channels.util.Request;
 import com.googlecode.acpj.channels.util.RequestWithCallbackPattern;
+import com.googlecode.acpj.services.LogService;
 import com.googlecode.acpj.services.WatchdogService;
 
 import junit.framework.Assert;
@@ -287,7 +288,8 @@ public class SimpleChannelTests extends TestCase {
 	public void test006_ChannelFilterTest() throws Exception {
 		System.out.println(String.format("===== %s =====", getName()));
 		
-		WatchdogService.start();
+		new LogService().start();
+		new WatchdogService().start();
 		
 		Channel<Integer> rawChannel = ChannelFactory.getInstance().createOneToOneChannel("RandomNumbers"); 
 		Channel<Integer> filteredChannel = ChannelFactory.getInstance().createOneToOneChannel("FilteredNumbers");

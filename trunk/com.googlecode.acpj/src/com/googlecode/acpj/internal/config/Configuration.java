@@ -81,7 +81,7 @@ public class Configuration {
 	}
 
 	public static boolean getChannelMonitorStatus() {
-		String monitorChannels = System.getProperty(Arguments.CFG_MONITOR_CHANNELS, "True");
-		return Boolean.getBoolean(monitorChannels);
+		String monitorChannels = System.getProperty(Arguments.CFG_MONITOR_CHANNELS, "true");
+		return Boolean.parseBoolean(monitorChannels);
 	}
 }

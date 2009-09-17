@@ -45,7 +45,7 @@ public class ServiceTests extends TestCase {
 	
 	public void test001_WatchdogTests() throws Exception {
 		System.out.println(String.format("===== %s =====", getName()));
-		WatchdogService.start();
+		new WatchdogService().start();
 		
 		ActorFactory.getInstance().createActor(new Works(), "works");
 		ActorFactory.getInstance().createActor(new Crashes(), "crashes");
@@ -55,8 +55,8 @@ public class ServiceTests extends TestCase {
 
 	public void test002_WatchdogWithLoggerTests() throws Exception {
 		System.out.println(String.format("===== %s =====", getName()));
-		LogService.start();
-		WatchdogService.start();
+		new LogService().start();
+		new WatchdogService().start();
 		
 		ActorFactory.getInstance().createActor(new Works(), "works");
 		ActorFactory.getInstance().createActor(new Crashes(), "crashes");

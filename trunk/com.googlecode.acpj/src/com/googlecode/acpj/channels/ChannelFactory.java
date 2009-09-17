@@ -8,7 +8,6 @@
  */
 package com.googlecode.acpj.channels;
 
-import com.googlecode.acpj.channels.monitor.ChannelMonitor;
 import com.googlecode.acpj.internal.config.Configuration;
 
 /**

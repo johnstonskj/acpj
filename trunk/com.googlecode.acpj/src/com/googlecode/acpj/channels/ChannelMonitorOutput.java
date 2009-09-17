@@ -6,7 +6,7 @@
  * distribution of this code.
  * 
  */
-package com.googlecode.acpj.channels.monitor;
+package com.googlecode.acpj.channels;
 
 import java.io.IOException;
 import java.io.OutputStream;
