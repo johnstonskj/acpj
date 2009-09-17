@@ -8,12 +8,13 @@
  */
 package com.googlecode.acpj.services;
 
-import com.googlecode.acpj.actors.Actor;
-import com.googlecode.acpj.actors.ActorFactory;
-import com.googlecode.acpj.channels.BufferedChannel;
+import java.util.logging.Level;
+import java.util.logging.LogRecord;
+
 import com.googlecode.acpj.channels.Channel;
-import com.googlecode.acpj.channels.ChannelFactory;
+import com.googlecode.acpj.channels.ChannelPoisonedException;
 import com.googlecode.acpj.channels.ChannelRegistry;
+import com.googlecode.acpj.channels.WritePort;
 
 /**
  * <p>
@@ -25,32 +26,52 @@ import com.googlecode.acpj.channels.ChannelRegistry;
  * @since 0.1.0
  * 
  */
-public class WatchdogService {
+public class WatchdogService extends BasicService<ActorStateMessage> {
 	
-	public static final String CHANNEL_NAME = "com.googlecode.acpj.services.NotificationChannel";
-	public static final String ACTOR_NAME = "com.googlecode.acpj.services.WatchdogActor";
+	/**
+	 * The publicly registered channel name, clients use this to lookup the channel
+	 * prior to sending requests.
+	 */
+	public static final String CHANNEL_NAME = "com.googlecode.acpj.services.WatchdogNotificationChannel";
 	
-	private static Channel<ActorStateMessage> watchdogChannel = null;
-	private static Actor watchdogActor = null;
-	private static Object serviceLock = new Object();
-	
-	public static void start() {
-		synchronized (serviceLock) {
-			if (watchdogActor == null || !watchdogActor.isRunning()) {
-				watchdogChannel = ChannelFactory.getInstance().createAnyToOneChannel(CHANNEL_NAME, BufferedChannel.BUFFER_CAPACITY_UNLIMITED);
-				ChannelRegistry.getInstance().register(watchdogChannel, CHANNEL_NAME,true);
-				watchdogActor = ActorFactory.getInstance().createActor(new WatchdogServiceActor(watchdogChannel.getReadPort(false)), ACTOR_NAME);
-			}
-		}
+	public WatchdogService() {
+		setChannelName(CHANNEL_NAME);
 	}
 
-	public static void stop() {
-		synchronized (serviceLock) {
-			if (watchdogActor != null && watchdogActor.isRunning()) {
-				ChannelRegistry.getInstance().deregister(CHANNEL_NAME);
-				watchdogChannel.poison();
-				watchdogChannel = null;
-				watchdogActor = null;
+	/**
+	 * The watchdog service logic, it receives new messages, of the form
+	 * {@link ActorStateMessage} and either sends them to the logger service,
+	 * or writes them to the console.
+	 */
+	@Override
+	public void run() {
+		Channel<LogRecord> loggerChannel = null;
+		WritePort<LogRecord> loggerPort = null;
+		while (true) {
+			if (loggerChannel == null) {
+				loggerChannel = ChannelRegistry.getInstance().lookupOrNull(LogService.CHANNEL_NAME);
+				if (loggerChannel != null) {
+					loggerPort = loggerChannel.getWritePort(true);
+				}
+				try {
+					getReadPort().claim();
+				} catch (Throwable t) {
+					t.printStackTrace();
+				}
+			}
+			ActorStateMessage message =  null;
+			try {
+				message = getNextRequest();
+			} catch (ChannelPoisonedException e) {
+				break;
+			} catch (Throwable t) {
+				t.printStackTrace();
+			}
+			final String msg = String.format("%10s - %s", message.getActorState(), message.getActorName());
+			if (loggerPort != null) {
+				loggerPort.write(new LogRecord(Level.INFO, msg));
+			} else {
+				System.out.println(String.format("%10s - %s", message.getActorState(), message.getActorName()));
 			}
 		}
 	}

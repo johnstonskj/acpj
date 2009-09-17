@@ -13,14 +13,14 @@ import java.util.Iterator;
 import java.util.Set;
 
 import com.googlecode.acpj.actors.Actor;
+import com.googlecode.acpj.channels.MonitoredChannel;
+import com.googlecode.acpj.channels.MonitoredPort;
 import com.googlecode.acpj.channels.Port;
 import com.googlecode.acpj.channels.PortArity;
-import com.googlecode.acpj.channels.monitor.MonitoredChannel;
-import com.googlecode.acpj.channels.monitor.MonitoredPort;
 
 /**
  * <p>
- * Internal = implementation of {@link com.googlecode.acpj.channels.monitor.MonitoredChannel}
+ * Internal = implementation of {@link com.googlecode.acpj.channels.MonitoredChannel}
  * </p>
  * 
  * @author Simon Johnston (simon@johnstonshome.org)
@@ -66,7 +66,7 @@ class MonitoredChannelImpl implements MonitoredChannel {
 
 	/*
 	 * (non-Javadoc)
-	 * @see com.googlecode.acpj.channels.monitor.MonitoredChannel#getBufferCapacity()
+	 * @see com.googlecode.acpj.channels.MonitoredChannel#getBufferCapacity()
 	 */
 	public int getBufferCapacity() {
 		if (isBuffered()) {
@@ -77,7 +77,7 @@ class MonitoredChannelImpl implements MonitoredChannel {
 
 	/*
 	 * (non-Javadoc)
-	 * @see com.googlecode.acpj.channels.monitor.MonitoredChannel#getName()
+	 * @see com.googlecode.acpj.channels.MonitoredChannel#getName()
 	 */
 	public String getName() {
 		return actualChannel.getName();
@@ -85,7 +85,7 @@ class MonitoredChannelImpl implements MonitoredChannel {
 
 	/*
 	 * (non-Javadoc)
-	 * @see com.googlecode.acpj.channels.monitor.MonitoredChannel#getReadPortArity()
+	 * @see com.googlecode.acpj.channels.MonitoredChannel#getReadPortArity()
 	 */
 	public PortArity getReadPortArity() {
 		return actualChannel.getReadPortArity();
@@ -93,7 +93,7 @@ class MonitoredChannelImpl implements MonitoredChannel {
 
 	/*
 	 * (non-Javadoc)
-	 * @see com.googlecode.acpj.channels.monitor.MonitoredChannel#getReadPorts()
+	 * @see com.googlecode.acpj.channels.MonitoredChannel#getReadPorts()
 	 */
 	public Iterator<MonitoredPort> getReadPorts() {
 		Set<MonitoredPort> ports = new HashSet<MonitoredPort>();
@@ -106,7 +106,7 @@ class MonitoredChannelImpl implements MonitoredChannel {
 
 	/*
 	 * (non-Javadoc)
-	 * @see com.googlecode.acpj.channels.monitor.MonitoredChannel#getWritePortArity()
+	 * @see com.googlecode.acpj.channels.MonitoredChannel#getWritePortArity()
 	 */
 	public PortArity getWritePortArity() {
 		return actualChannel.getWritePortArity();
@@ -114,7 +114,7 @@ class MonitoredChannelImpl implements MonitoredChannel {
 
 	/*
 	 * (non-Javadoc)
-	 * @see com.googlecode.acpj.channels.monitor.MonitoredChannel#getWritePorts()
+	 * @see com.googlecode.acpj.channels.MonitoredChannel#getWritePorts()
 	 */
 	public Iterator<MonitoredPort> getWritePorts() {
 		Set<MonitoredPort> ports = new HashSet<MonitoredPort>();
@@ -127,7 +127,7 @@ class MonitoredChannelImpl implements MonitoredChannel {
 
 	/*
 	 * (non-Javadoc)
-	 * @see com.googlecode.acpj.channels.monitor.MonitoredChannel#isBuffered()
+	 * @see com.googlecode.acpj.channels.MonitoredChannel#isBuffered()
 	 */
 	public boolean isBuffered() {
 		return actualChannel.getBufferCapacity() != 0;
@@ -135,7 +135,7 @@ class MonitoredChannelImpl implements MonitoredChannel {
 
 	/*
 	 * (non-Javadoc)
-	 * @see com.googlecode.acpj.channels.monitor.MonitoredChannel#size()
+	 * @see com.googlecode.acpj.channels.MonitoredChannel#size()
 	 */
 	public int size() {
 		return actualChannel.size();
@@ -143,7 +143,7 @@ class MonitoredChannelImpl implements MonitoredChannel {
 
 	/*
 	 * (non-Javadoc)
-	 * @see com.googlecode.acpj.channels.monitor.MonitoredChannel#isPoisoned()
+	 * @see com.googlecode.acpj.channels.MonitoredChannel#isPoisoned()
 	 */
 	public boolean isPoisoned() {
 		return actualChannel.isPoisoned();

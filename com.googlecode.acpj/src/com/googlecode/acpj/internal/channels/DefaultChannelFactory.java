@@ -16,9 +16,9 @@ import java.util.Set;
 import com.googlecode.acpj.channels.BufferedChannel;
 import com.googlecode.acpj.channels.Channel;
 import com.googlecode.acpj.channels.ChannelFactory;
+import com.googlecode.acpj.channels.ChannelMonitor;
+import com.googlecode.acpj.channels.MonitoredChannel;
 import com.googlecode.acpj.channels.PortArity;
-import com.googlecode.acpj.channels.monitor.ChannelMonitor;
-import com.googlecode.acpj.channels.monitor.MonitoredChannel;
 import com.googlecode.acpj.internal.config.Configuration;
 
 /**

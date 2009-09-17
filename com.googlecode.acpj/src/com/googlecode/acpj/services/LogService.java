@@ -8,50 +8,60 @@
  */
 package com.googlecode.acpj.services;
 
+import java.util.logging.Level;
 import java.util.logging.LogRecord;
+import java.util.logging.Logger;
 
-import com.googlecode.acpj.actors.Actor;
-import com.googlecode.acpj.actors.ActorFactory;
-import com.googlecode.acpj.channels.Channel;
-import com.googlecode.acpj.channels.ChannelFactory;
-import com.googlecode.acpj.channels.ChannelRegistry;
+import com.googlecode.acpj.channels.ChannelPoisonedException;
 
 /**
  * <p>
- * A pre-built, simple, logging service that accepts standard Java util
- * {@link java.util.logging.LogRecord log records} and logs them.
+ * A pre-built, simple, service that wraps a standard Log4J output.
  * </p>
  * 
  * @author Simon Johnston (simon@johnstonshome.org)
  * @since 0.1.0
  * 
  */
-public class LogService {
+public class LogService extends BasicService<LogRecord> {
 
-	public static final String CHANNEL_NAME = "com.googlecode.acpj.services.MessageChannel";
-	public static final String ACTOR_NAME = "com.googlecode.acpj.services.LoggerActor";
+	/**
+	 * The publicly registered channel name, clients use this to lookup the channel
+	 * prior to sending requests.
+	 */
+	public static final String CHANNEL_NAME = "com.googlecode.acpj.services.LoggingChannel";
 
-	private static Channel<LogRecord> loggerChannel = null;
-	private static Actor loggerActor = null;
-	private static Object serviceLock = new Object();
+	/**
+	 * Construct a new log service.
+	 */
+	public LogService() {
+		setChannelName(CHANNEL_NAME);
+	}
 
-	public static void start() {
-		synchronized (serviceLock) {
-			if (loggerActor == null || !loggerActor.isRunning()) {
-				loggerChannel = ChannelFactory.getInstance().createAnyToOneChannel(CHANNEL_NAME, -1);
-				ChannelRegistry.getInstance().register(loggerChannel, CHANNEL_NAME, false);
-				loggerActor = ActorFactory.getInstance().createActor(new LogServiceActor(loggerChannel.getReadPort(false)), ACTOR_NAME);
-			}
+	/**
+	 * Run the logger service, this basically takes standard Java 
+	 * {@link java.util.logging.LogRecord} messages and outputs them
+	 * using a default logger configuration.
+	 */
+	@Override
+	public void run() {
+		Logger logger = Logger.getLogger("com.googlecode.acpj.services.logger");
+		try {
+			getReadPort().claim();
+		} catch (Throwable t) {
+			logger.log(Level.SEVERE, "Failed to claim logger port.", t);
+		}
+		while (true) {
+			LogRecord request =  null;
+			try {
+				request = getNextRequest();
+			} catch (ChannelPoisonedException e) {
+				break;
+			} catch (Throwable t) {
+				logger.log(Level.SEVERE, "Failed to read logger queue.", t);
+			}		
+			logger.log(request);
 		}
 	}
 
-	public static void stop() {
-		synchronized (serviceLock) {
-			if (loggerActor != null && loggerActor.isRunning()) {
-				loggerChannel.poison();
-				loggerChannel = null;
-				loggerActor = null;
-			}
-		}
-	}
 }
