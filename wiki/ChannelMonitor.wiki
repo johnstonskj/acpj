@@ -22,7 +22,8 @@ The following, a test case from the suite, creates two channels and three applic
         new ChannelFilter<Integer, Integer>(
             rawChannel.getReadPort(false), 
             filteredChannel.getWritePort(false), 
-            new NumberFilter(), true), 
+            new NumberFilter(), 
+            true), 
         "ChannelFilter");
     ActorFactory.getInstance().createActor(
         new RandomNumberGenerator(rawChannel.getWritePort(false), 500), 
