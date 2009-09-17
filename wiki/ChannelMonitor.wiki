@@ -1,0 +1,5 @@
+#summary Introduces the ChannelMonitor class and utilities.
+
+= Introduction =
+
+TBD.
