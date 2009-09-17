@@ -8,6 +8,7 @@
  */
 package com.googlecode.acpj.channels;
 
+import com.googlecode.acpj.channels.monitor.ChannelMonitor;
 import com.googlecode.acpj.internal.config.Configuration;
 
 /**
@@ -102,4 +103,24 @@ public abstract class ChannelFactory {
 	public abstract <T> Channel<T> createChannel(String name, PortArity readPortArity, int readPortLimit, PortArity writePortArity, int writePortLimit) throws IllegalArgumentException;
 
 	public abstract <T> BufferedChannel<T> createChannel(String name, PortArity readPortArity, int readPortLimit, PortArity writePortArity, int writePortLimit, int capacity) throws IllegalArgumentException;
+
+	/**
+	 * <p>
+	 * Return the channel monitor used by this channel factory that can be used
+	 * to introspect the set of channels, ports and actors currently live in the
+	 * system. Note that this is an optional method, the channel factory does not
+	 * need to have a channel monitor, or the channel monitor may be started only
+	 * with a certain configuration option (for performance). In this case the 
+	 * method will return <code>null</code>.
+	 * </p>
+	 * <p>
+	 * It is possible that the channel factory may create the monitor instance on
+	 * each call, so each monitor is effectively a snap-shot in time, the client
+	 * should therefore call this method every time the monitor is needed rather
+	 * than holding onto one instance forever.
+	 * </p>
+	 * 
+	 * @return a channel monitor instance, or <code>null</code>.
+	 */
+	public abstract ChannelMonitor getChannelMonitor();
 }

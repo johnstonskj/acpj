@@ -8,10 +8,12 @@
  */
 package com.googlecode.acpj.internal.channels;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.Set;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.SynchronousQueue;
 import java.util.concurrent.atomic.AtomicLong;
 
 import com.googlecode.acpj.actors.ActorFactory;
@@ -34,7 +36,7 @@ import com.googlecode.acpj.channels.WritePort;
  * @since 0.1.0
  * 
  */
-public class SimpleChannel<T> implements BufferedChannel<T> {
+public class SimpleChannel<T> implements BufferedChannel<T>, SimpleMonitoredChannel<T> {
 	
 	class Item<V> {
 		/*
@@ -53,20 +55,16 @@ public class SimpleChannel<T> implements BufferedChannel<T> {
 	
 	private PortArity readArity = null;
 	private int readPortLimit = 0;
-	private List<ReadPort<T>> readPorts = null; 
+	private Set<ReadPort<T>> readPorts = null; 
 	
 	private PortArity writeArity = null;
 	private int writePortLimit = 0;
-	private List<WritePort<T>> writePorts = null;
+	private Set<WritePort<T>> writePorts = null;
 	
 	private boolean poisoned = false;
 	
 	public SimpleChannel(String name, PortArity readPortArity, int readPortLimit, PortArity writePortArity, int writePortLimit, int capacity) {
-		if (name == null) {
-			this.name = String.format("channel:/%d", this.id);
-		} else {
-			this.name = String.format("channel:/%s/%d", name, this.id);
-		}
+		this.name = name;
 	
 		if (readPortArity == null) {
 			throw new IllegalArgumentException("Read port arity may not be null.");
@@ -76,7 +74,7 @@ public class SimpleChannel<T> implements BufferedChannel<T> {
 			throw new IllegalArgumentException("Read port limit may not be zero.");
 		}
 		this.readPortLimit = readPortLimit;
-		this.readPorts = new ArrayList<ReadPort<T>>(this.readArity == PortArity.ONE ? 1 : 10);
+		this.readPorts = new HashSet<ReadPort<T>>(this.readArity == PortArity.ONE ? 1 : 10);
 
 		if (writePortArity == null) {
 			throw new IllegalArgumentException("Write port arity may not be null.");
@@ -86,12 +84,13 @@ public class SimpleChannel<T> implements BufferedChannel<T> {
 			throw new IllegalArgumentException("Write port limit may not be zero.");
 		}
 		this.writePortLimit = writePortLimit;
-		writePorts = new ArrayList<WritePort<T>>(this.writeArity == PortArity.ONE ? 1 : 10);
+		writePorts = new HashSet<WritePort<T>>(this.writeArity == PortArity.ONE ? 1 : 10);
 
-		if (capacity == 0) {
-			values = new ZeroBlockingQueue<Item<T>>();
+		this.capacity = capacity;
+		if (this.capacity == 0) {
+			values = new SynchronousQueue<Item<T>>(true);
 		} else {
-			values = new LinkedBlockingQueue<Item<T>>(capacity == BUFFER_CAPACITY_UNLIMITED ? Integer.MAX_VALUE : capacity);
+			values = new LinkedBlockingQueue<Item<T>>(this.capacity == BUFFER_CAPACITY_UNLIMITED ? Integer.MAX_VALUE : this.capacity);
 		}
 	}
 
@@ -179,7 +178,11 @@ public class SimpleChannel<T> implements BufferedChannel<T> {
 	 * @see com.googlecode.acpj.channels.Channel#getName()
 	 */
 	public String getName() {
-		return this.name;
+		if (this.name == null) {
+			return String.format("channel:/%d", this.id);
+		} else {
+			return String.format("channel:/%s/%d", this.name, this.id);
+		}
 	}
 
 	/*
@@ -276,4 +279,49 @@ public class SimpleChannel<T> implements BufferedChannel<T> {
 		this.writePorts.clear();
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * @see java.lang.Object#hashCode()
+	 */
+	@Override
+	public int hashCode() {
+		return (int)this.id;
+	}
+	
+	/*
+	 * (non-Javadoc)
+	 * @see java.lang.Object#equals(java.lang.Object)
+	 */
+	@Override
+	public boolean equals(Object obj) {
+		if (!(obj instanceof SimpleChannel)) {
+			return false;
+		}
+		return this.id == ((SimpleChannel<?>)obj).id;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see java.lang.Object#toString()
+	 */
+	@Override
+	public String toString() {
+		return getName();
+	}
+	
+	/*
+	 * (non-Javadoc)
+	 * @see com.googlecode.acpj.internal.channels.SimpleMonitoredChannel#getReadPorts()
+	 */
+	public Iterator<ReadPort<T>> getReadPorts() {
+		return readPorts.iterator();
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see com.googlecode.acpj.internal.channels.SimpleMonitoredChannel#getWritePorts()
+	 */
+	public Iterator<WritePort<T>> getWritePorts() {
+		return writePorts.iterator();
+	}
 }

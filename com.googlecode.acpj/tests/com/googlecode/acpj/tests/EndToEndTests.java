@@ -28,7 +28,7 @@ import junit.framework.TestCase;
  */
 public class EndToEndTests extends TestCase {
 	
-	class LogRecord {
+	private class LogRecord {
 		int level;
 		String message;
 		public LogRecord(int level, String message) {
@@ -37,7 +37,7 @@ public class EndToEndTests extends TestCase {
 		}
 	}
 	
-	class LoggerActor implements Runnable {
+	private class LoggerActor implements Runnable {
 		public void run() {
 			BufferedChannel<LogRecord> logChannel = ChannelFactory.getInstance().createAnyToOneChannel("com.googlecode.acpj.logger", -1);
 			ChannelRegistry.getInstance().register(logChannel, "com.googlecode.acpj.logger", false);
@@ -54,7 +54,7 @@ public class EndToEndTests extends TestCase {
 		}		
 	}
 	
-	class NumberGenerator implements Runnable {
+	private class NumberGenerator implements Runnable {
 		private int id = 0;
 		public NumberGenerator(int id) {
 			this.id = id;

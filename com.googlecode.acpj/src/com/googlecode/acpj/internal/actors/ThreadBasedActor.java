@@ -66,7 +66,11 @@ public class ThreadBasedActor implements Actor {
 	 * @see com.googlecode.acpj.actors.Actor#getName()
 	 */
 	public String getName() {
-		return this.thread.getName();
+		if (this.thread.getName() == null) {
+			return String.format("actor:/%d", getLocalId());
+		} else {
+			return String.format("actor:/%s/%d", this.thread.getName(), getLocalId());
+		}
 	}
 
 	/*

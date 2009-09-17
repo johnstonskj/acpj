@@ -10,6 +10,7 @@ package com.googlecode.acpj.services;
 
 import com.googlecode.acpj.actors.Actor;
 import com.googlecode.acpj.actors.ActorFactory;
+import com.googlecode.acpj.channels.BufferedChannel;
 import com.googlecode.acpj.channels.Channel;
 import com.googlecode.acpj.channels.ChannelFactory;
 import com.googlecode.acpj.channels.ChannelRegistry;
@@ -36,7 +37,7 @@ public class WatchdogService {
 	public static void start() {
 		synchronized (serviceLock) {
 			if (watchdogActor == null || !watchdogActor.isRunning()) {
-				watchdogChannel = ChannelFactory.getInstance().createAnyToOneChannel(CHANNEL_NAME, -1);
+				watchdogChannel = ChannelFactory.getInstance().createAnyToOneChannel(CHANNEL_NAME, BufferedChannel.BUFFER_CAPACITY_UNLIMITED);
 				ChannelRegistry.getInstance().register(watchdogChannel, CHANNEL_NAME,true);
 				watchdogActor = ActorFactory.getInstance().createActor(new WatchdogServiceActor(watchdogChannel.getReadPort(false)), ACTOR_NAME);
 			}

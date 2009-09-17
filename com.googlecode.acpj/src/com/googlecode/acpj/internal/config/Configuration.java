@@ -80,4 +80,8 @@ public class Configuration {
 		return Integer.parseInt(poolSize);
 	}
 
+	public static boolean getChannelMonitorStatus() {
+		String monitorChannels = System.getProperty(Arguments.CFG_MONITOR_CHANNELS, "True");
+		return Boolean.getBoolean(monitorChannels);
+	}
 }
