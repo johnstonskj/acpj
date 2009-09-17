@@ -8,10 +8,18 @@
  */
 package com.googlecode.acpj.internal.channels;
 
+import java.lang.ref.WeakReference;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.Set;
+
 import com.googlecode.acpj.channels.BufferedChannel;
 import com.googlecode.acpj.channels.Channel;
 import com.googlecode.acpj.channels.ChannelFactory;
 import com.googlecode.acpj.channels.PortArity;
+import com.googlecode.acpj.channels.monitor.ChannelMonitor;
+import com.googlecode.acpj.channels.monitor.MonitoredChannel;
+import com.googlecode.acpj.internal.config.Configuration;
 
 /**
  * <p>
@@ -24,6 +32,10 @@ import com.googlecode.acpj.channels.PortArity;
  * 
  */
 public class DefaultChannelFactory extends ChannelFactory {
+	
+	public static boolean monitorChannels = Configuration.getChannelMonitorStatus();
+	
+	public static Set<WeakReference<SimpleChannel<?>>> channels = new HashSet<WeakReference<SimpleChannel<?>>>();
 	
 	/*
 	 * (non-Javadoc)
@@ -228,7 +240,11 @@ public class DefaultChannelFactory extends ChannelFactory {
 	 * @see com.googlecode.acpj.channels.ChannelFactory#createChannel(java.lang.String, com.googlecode.acpj.channels.PortArity, int, com.googlecode.acpj.channels.PortArity, int)
 	 */
 	public <T> Channel<T> createChannel(String name, PortArity readPortArity, int readPortLimit, PortArity writePortArity, int writePortLimit) throws IllegalArgumentException {
-		return new SimpleChannel<T>(name, readPortArity, readPortLimit, writePortArity, writePortLimit, 0);
+		SimpleChannel<T> channel = new SimpleChannel<T>(name, readPortArity, readPortLimit, writePortArity, writePortLimit, 0);
+		if (monitorChannels) {
+			channels.add(new WeakReference<SimpleChannel<?>>(channel));
+		}
+		return channel;
 	}
 
 	/*
@@ -236,7 +252,35 @@ public class DefaultChannelFactory extends ChannelFactory {
 	 * @see com.googlecode.acpj.channels.ChannelFactory#createChannel(java.lang.String, com.googlecode.acpj.channels.PortArity, int, com.googlecode.acpj.channels.PortArity, int, int)
 	 */
 	public <T> BufferedChannel<T> createChannel(String name, PortArity readPortArity, int readPortLimit, PortArity writePortArity, int writePortLimit, int capacity) throws IllegalArgumentException {
-		return new SimpleChannel<T>(name, readPortArity, readPortLimit, writePortArity, writePortLimit, capacity);
+		SimpleChannel<T> channel = new SimpleChannel<T>(name, readPortArity, readPortLimit, writePortArity, writePortLimit, capacity);
+		if (monitorChannels) {
+			channels.add(new WeakReference<SimpleChannel<?>>(channel));
+		}
+		return channel;
+	}
+
+	private class SimpleChannelMonitor implements ChannelMonitor {
+		public Iterator<MonitoredChannel> getChannels() {
+			Set<MonitoredChannel> monitored = new HashSet<MonitoredChannel>();
+			for (Iterator<WeakReference<SimpleChannel<?>>> iterator = channels.iterator(); iterator.hasNext();) {
+				WeakReference<SimpleChannel<?>> ref = iterator.next();
+				if (ref.get() != null) {
+					monitored.add(new MonitoredChannelImpl(ref.get()));
+				}
+			}
+			return monitored.iterator();
+		}
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see com.googlecode.acpj.channels.ChannelFactory#getChannelMonitor()
+	 */
+	public ChannelMonitor getChannelMonitor() {
+		if (monitorChannels) {
+			return new SimpleChannelMonitor();
+		}
+		return null;
 	}
 
 }

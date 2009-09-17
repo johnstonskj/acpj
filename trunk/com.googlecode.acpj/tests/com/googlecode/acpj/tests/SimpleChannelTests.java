@@ -21,6 +21,7 @@ import com.googlecode.acpj.channels.ChannelRegistry;
 import com.googlecode.acpj.channels.PortArity;
 import com.googlecode.acpj.channels.ReadPort;
 import com.googlecode.acpj.channels.WritePort;
+import com.googlecode.acpj.channels.monitor.ChannelMonitorOutput;
 import com.googlecode.acpj.channels.util.ChannelFilter;
 import com.googlecode.acpj.channels.util.ChannelOperation;
 import com.googlecode.acpj.channels.util.Request;
@@ -288,12 +289,14 @@ public class SimpleChannelTests extends TestCase {
 		
 		WatchdogService.start();
 		
-		Channel<Integer> rawChannel = ChannelFactory.getInstance().createOneToOneChannel(); 
-		Channel<Integer> filteredChannel = ChannelFactory.getInstance().createOneToOneChannel();
+		Channel<Integer> rawChannel = ChannelFactory.getInstance().createOneToOneChannel("RandomNumbers"); 
+		Channel<Integer> filteredChannel = ChannelFactory.getInstance().createOneToOneChannel("FilteredNumbers");
 		
 		ActorFactory.getInstance().createActor(new NumberPrinter(filteredChannel.getReadPort(false)), "NumberPrinter");
 		ActorFactory.getInstance().createActor(new ChannelFilter<Integer, Integer>(rawChannel.getReadPort(false), filteredChannel.getWritePort(false), new NumberFilter(), true), "ChannelFilter");
-		ActorFactory.getInstance().createActor(new RandomNumberGenerator(rawChannel.getWritePort(false), 50), "RandomNumberGenerator");
+		ActorFactory.getInstance().createActor(new RandomNumberGenerator(rawChannel.getWritePort(false), 500), "RandomNumberGenerator");
+
+		ChannelMonitorOutput.writeDOT(ChannelFactory.getInstance().getChannelMonitor(), System.err);
 		
 		Thread.sleep(1000);
 	}

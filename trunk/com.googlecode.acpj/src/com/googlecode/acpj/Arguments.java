@@ -68,5 +68,12 @@ public class Arguments {
 	 */
 	public static final String CFG_THREAD_POOL_SIZE = "com.googlecode.acpj.config.ThreadPoolSize";
 
+	/**
+	 * <p>
+	 *   This is a Boolean value that determines whether the {@link com.googlecode.acpj.channels.ChannelFactory}
+	 *   should attempt to monitor all channels.
+	 * </p>
+	 */
+	public static final String CFG_MONITOR_CHANNELS = "com.googlecode.acpj.config.MonitorChannels";
 }
 
