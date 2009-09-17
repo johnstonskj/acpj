@@ -32,3 +32,7 @@ digraph channels {
   channel_4 -> actor_2 [style="solid"];
 }
 }}}
+
+Results in:
+
+http://acpj.googlecode.com/svn/trunk/com.googlecode.acpj/doc/resources/graph.png
