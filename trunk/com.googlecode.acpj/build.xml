@@ -1,4 +1,11 @@
 <?xml version="1.0"?>
+<!--
+  - Licensed Materials - Property of Simon Johnston (simon@johnstonshome.org)
+  - (c) Copyright Simon Johnston 2009. All rights reserved.
+  - 
+  - For full license details, see the file LICENSE included in the
+  - distribution of this code.
+  - -->
 <project name="acpj" default="lib">
 	
 	<!-- existing directories in SVN -->
@@ -51,7 +58,7 @@
 	</target>
 	
 	<target name="test" depends="compile">
-		<!-- create the JAR for the test suite -->
+		<!-- Run the primary JUnit test suite -->
 		<junit printsummary="yes" fork="yes" haltonfailure="yes">
 		  	<formatter type="plain"/>
 			<classpath>
@@ -60,6 +67,7 @@
 			</classpath>
 		  	<test name="com.googlecode.acpj.tests.AllTests" todir="${dir.dist}"/>
 		</junit>
+		<!-- create the JAR for the test suite -->
 		<jar destfile="${dir.dist}/acpj-test-${lib.version}.jar">
 			<fileset 
 				dir="${dir.build}" 
@@ -74,8 +82,9 @@
 	</target>
 	
 	<target name="doc" depends="init">
-		<!-- create all the JavaDoc -->
+		<!-- used to ensure the lib name/version is the root path element -->
 	    <mkdir dir="${dir.doc}/acpj-${lib.version}"/>
+		<!-- create all the JavaDoc -->
 		<javadoc 
 		  	access="public" 
 		  	author="true" 
@@ -110,6 +119,7 @@
 	<target name="src" depends="init">
 		<!-- create a tar file with all the source -->
 		<tar destfile="${dir.dist}/acpj-src-${lib.version}.tar">
+			<!-- use prefix to ensure the lib name/version is the root path element -->
 			<tarfileset prefix="acpj-${lib.version}/src" dir="${dir.src}"/>
 			<tarfileset prefix="acpj-${lib.version}/tests"  dir="${dir.tests}"/>
 			<tarfileset prefix="acpj-${lib.version}" dir="." includes="build.xml"/>

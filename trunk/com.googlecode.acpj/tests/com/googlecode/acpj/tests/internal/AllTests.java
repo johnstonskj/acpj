@@ -6,7 +6,7 @@
  * distribution of this code.
  * 
  */
-package com.googlecode.acpj.tests;
+package com.googlecode.acpj.tests.internal;
 
 import junit.framework.Test;
 import junit.framework.TestSuite;
@@ -22,12 +22,10 @@ import junit.framework.TestSuite;
 public class AllTests {
 
 	public static Test suite() {
-		TestSuite suite = new TestSuite("Public Tests for com.googlecode.acpj");
+		TestSuite suite = new TestSuite("Internal Tests for com.googlecode.acpj");
 		//$JUnit-BEGIN$
-		suite.addTestSuite(SimpleActorTests.class);
-		suite.addTestSuite(SimpleChannelTests.class);
-		suite.addTestSuite(EndToEndTests.class);
-		suite.addTestSuite(ServiceTests.class);
+		suite.addTestSuite(ZBQTests.class);
+		suite.addTestSuite(ExecutorTests.class);
 		//$JUnit-END$
 		return suite;
 	}
