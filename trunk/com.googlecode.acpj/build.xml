@@ -1,0 +1,111 @@
+<?xml version="1.0"?>
+<project name="acpj" default="lib">
+	
+	<!-- existing directories in SVN -->
+  	<property name="dir.src"   location="src"/>
+  	<property name="dir.tests" location="tests"/>
+  	<property name="dir.lib" location="lib"/>
+	<!-- required directories for the build -->
+  	<property name="dir.build" location="bin"/>
+  	<property name="dir.doc"   location="doc"/>
+  	<property name="dir.dist"  location="dist"/>
+
+	<!-- library properties -->
+	<property name="lib.name" value="Actors, Channels and Ports for Java"/>
+	<property name="lib.version" value="0.1.0"/>
+	
+	<target name="init">
+	    <mkdir dir="${dir.build}"/>
+	    <mkdir dir="${dir.doc}"/>
+	    <mkdir dir="${dir.dist}"/>
+	</target>
+
+	<target name="compile" depends="init">
+		<javac 
+			srcdir="${dir.src}"
+         	destdir="${dir.build}"
+         	debug="on" />
+		<javac 
+			srcdir="${dir.tests}"
+         	destdir="${dir.build}"
+		  	classpath="${dir.lib}/junit.jar" 
+         	debug="on" />
+	</target>
+	
+	<target name="lib" depends="compile">
+		<jar destfile="${dir.dist}/acpj-${lib.version}.jar">
+			<fileset 
+				dir="${dir.build}" 
+				excludes="**/*Tests.class"/>
+			<filename name="LICENSE"/>
+			<manifest>
+				<attribute name="Built-By" value="${user.name}"/>
+		      	<attribute name="Implementation-Title" value="${lib.name}}"/>
+		      	<attribute name="Implementation-Version" value="${lib.version}"/>
+			</manifest>
+		</jar>
+	</target>
+	
+	<target name="test" depends="compile">
+		<jar destfile="${dir.dist}/acpj-test-${lib.version}.jar">
+			<fileset 
+				dir="${dir.build}" 
+				includes="**/*Tests.class"/>
+			<filename name="LICENSE"/>
+			<manifest>
+				<attribute name="Built-By" value="${user.name}"/>
+		      	<attribute name="Implementation-Title" value="${lib.name}} Tests"/>
+		      	<attribute name="Implementation-Version" value="${lib.version}"/>
+			</manifest>
+		</jar>
+	</target>
+	
+	<target name="doc" depends="init">
+	    <mkdir dir="${dir.doc}/acpj-${lib.version}"/>
+		<javadoc 
+		  	access="public" 
+		  	author="true" 
+		  	classpath="${dir.lib}/junit.jar" 
+		  	destdir="${dir.doc}/acpj-${lib.version}" 
+		  	doctitle="${lib.name}" 
+		  	nodeprecated="false" 
+		  	nodeprecatedlist="false" 
+		  	noindex="false" 
+		  	nonavbar="false" 
+		  	notree="false" 
+		  	overview="${dir.src}/com/googlecode/acpj/overview.html" 
+		  	packagenames="com.googlecode.acpj.channels,com.googlecode.acpj.actors,com.googlecode.acpj,com.googlecode.acpj.channels.monitor,com.googlecode.acpj.channels.util,com.googlecode.acpj.services,com.googlecode.acpj.services.logger" 
+		  	source="1.5" 
+		  	sourcepath="${dir.src}" 
+		  	splitindex="true" 
+		  	use="true" 
+		  	version="true"/>
+		<copy todir="${dir.doc}/acpj-${lib.version}/resources">
+			<fileset dir="doc-resources" includes="*"/>
+		</copy>
+		<copy file="LICENSE" todir="${dir.doc}/acpj-${lib.version}" />
+		<tar destfile="${dir.dist}/acpj-doc-${lib.version}.tar">
+			<fileset dir="${dir.doc}" />
+		</tar>
+		<gzip src="${dir.dist}/acpj-doc-${lib.version}.tar" destfile="${dir.dist}/acpj-doc-${lib.version}.tar.gz"/>
+		<delete file="${dir.dist}/acpj-doc-${lib.version}.tar" />
+	</target>
+	
+	<target name="src" depends="init">
+		<tar destfile="${dir.dist}/acpj-src-${lib.version}.tar">
+			<tarfileset prefix="acpj-${lib.version}/src" dir="${dir.src}"/>
+			<tarfileset prefix="acpj-${lib.version}/tests"  dir="${dir.tests}"/>
+			<tarfileset prefix="acpj-${lib.version}" dir="." includes="build.xml"/>
+			<tarfileset prefix="acpj-${lib.version}" dir="." includes="LICENSE"/>
+		</tar>
+		<gzip src="${dir.dist}/acpj-src-${lib.version}.tar" destfile="${dir.dist}/acpj-src-${lib.version}.tar.gz"/>
+		<delete file="${dir.dist}/acpj-src-${lib.version}.tar" />
+	</target>
+
+	<target name="clean">
+	    <delete dir="${dir.build}"/>
+	    <delete dir="${dir.doc}"/>
+	    <delete dir="${dir.dist}"/>
+	</target>
+
+</project>
