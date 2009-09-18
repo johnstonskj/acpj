@@ -162,4 +162,10 @@ The same classes above, but using an Any-to-Any Channel.
 
 In the example above, when the producer was complete it poisoned the channel it was writing to, this is generally good behavior as it not only signals to consumers that the work is done, but does so in a *very* final way.
 
+== More Information ==
+
 For a more complete example, see the ChannelFilterExample wiki page.
+
+For details on the patterns provided by the `util` package, see the ChannelPatterns wiki page.
+
+For details on the service framework, see the ServiceActors wiki page.
