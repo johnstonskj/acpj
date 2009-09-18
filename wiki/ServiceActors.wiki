@@ -3,3 +3,12 @@
 = Introduction =
 
 TBD
+
+= Implementing a Service =
+
+== The BasicService Class ==
+
+= Provided Services =
+
+  * !LoggerService
+  * !WatchdogService
