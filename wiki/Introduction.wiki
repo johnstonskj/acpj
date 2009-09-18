@@ -171,3 +171,5 @@ For a more complete example, see the ChannelFilterExample wiki page.
 For details on the patterns provided by the `util` package, see the ChannelPatterns wiki page.
 
 For details on the service framework, see the ServiceActors wiki page.
+
+For details on the channel monitor framework, see the ChannelMonitor wiki page.
