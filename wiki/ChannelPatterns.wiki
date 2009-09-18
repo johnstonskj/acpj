@@ -2,4 +2,16 @@
 
 = Introduction =
 
+The 'com.googlecode.acpj.channels.util' package contains a set of helper classes that provide the implementation of common patterns such as the request-response, filter and join-set. These patterns are general enough to be used as-is but simple enough that they can be replaced if necessary by more app-specific versions if you need them. The following sections describe the patterns and their implementations as they exist currently.
+
+== Request Response ==
+
+TBD
+
+== Channel Filters ==
+
+TBD
+
+== Join Set ==
+
 TBD
