@@ -65,7 +65,7 @@ digraph channels {
 
 Once run through the `dot` command results in the following PNG image.
 
-http://acpj.googlecode.com/svn/trunk/com.googlecode.acpj/doc/resources/graph.png
+http://acpj.googlecode.com/svn/trunk/com.googlecode.acpj/doc-resources/graph.png
 
 == RDF Output ==
 
