@@ -1,4 +1,4 @@
-#summary Introduces the ChannelMonitor class and utilities.
+#summary Describes the ChannelMonitor class and utilities for debugging systems.
 
 = Introduction =
 
