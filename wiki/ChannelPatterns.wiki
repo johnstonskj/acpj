@@ -1,0 +1,5 @@
+#summary Describes the contents of the util package containing helpers and patterns.
+
+= Introduction =
+
+TBD
