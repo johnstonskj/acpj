@@ -2,11 +2,20 @@
 
 = Introduction =
 
-TBD
+This page provides an introduction to the ACP/J API and it's intended usage, background on the ACP/J design and philosophy can be found on the [http://acpj.googlecode.com/ home page]. 
 
-== Dependencies ==
+== Getting the library ==
 
-Currently the ACP/J library has itself no external dependencies, the junit.jar is included in the lib directory for the test suite to run.
+Latest stable releases are available on the [http://code.google.com/p/acpj/downloads/list downloads page], or alternatively you can [http://code.google.com/p/acpj/source/checkout checkout] the latest source from Subversion. The library is developed in Eclipse so the root structure in Subversion is one or more Eclipse projects, ant scripts are included though for performing builds outside of Eclipse itself.
+
+Each stable release should deliver _at least_ the following files:
+
+  * `acpj-{version}.jar` - the built library itself (required).
+  * `acpj-test-{version}.jar` - the built test suite for the library (optional).
+  * `acpj-doc-{version}.jar` - the JavaDoc describing the library (optional).
+  * `acpj-src-{version}.jar` - the library source code (optional).
+
+Currently the ACP/J library has itself no external dependencies, the junit.jar is required (it is included in the lib directory of the Subversion repository) for the test suite to run.
 
 = Getting Started =
 
