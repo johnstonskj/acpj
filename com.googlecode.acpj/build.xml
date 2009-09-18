@@ -15,16 +15,19 @@
 	<property name="lib.version" value="0.1.0"/>
 	
 	<target name="init">
+		<!-- create build directories -->
 	    <mkdir dir="${dir.build}"/>
 	    <mkdir dir="${dir.doc}"/>
 	    <mkdir dir="${dir.dist}"/>
 	</target>
 
 	<target name="compile" depends="init">
+		<!-- compile the library -->
 		<javac 
 			srcdir="${dir.src}"
          	destdir="${dir.build}"
          	debug="on" />
+		<!-- compile the test suite -->
 		<javac 
 			srcdir="${dir.tests}"
          	destdir="${dir.build}"
@@ -33,6 +36,7 @@
 	</target>
 	
 	<target name="lib" depends="compile">
+		<!-- create the JAR for the library -->
 		<jar destfile="${dir.dist}/acpj-${lib.version}.jar">
 			<fileset 
 				dir="${dir.build}" 
@@ -47,6 +51,15 @@
 	</target>
 	
 	<target name="test" depends="compile">
+		<!-- create the JAR for the test suite -->
+		<junit printsummary="yes" fork="yes" haltonfailure="yes">
+		  	<formatter type="plain"/>
+			<classpath>
+				<pathelement location="${dir.build}"/>
+				<pathelement location="${dir.lib}/junit.jar"/>
+			</classpath>
+		  	<test name="com.googlecode.acpj.tests.AllTests" todir="${dir.dist}"/>
+		</junit>
 		<jar destfile="${dir.dist}/acpj-test-${lib.version}.jar">
 			<fileset 
 				dir="${dir.build}" 
@@ -61,6 +74,7 @@
 	</target>
 	
 	<target name="doc" depends="init">
+		<!-- create all the JavaDoc -->
 	    <mkdir dir="${dir.doc}/acpj-${lib.version}"/>
 		<javadoc 
 		  	access="public" 
@@ -80,10 +94,12 @@
 		  	splitindex="true" 
 		  	use="true" 
 		  	version="true"/>
+		<!-- copy static files into the JavaDoc tree -->
 		<copy todir="${dir.doc}/acpj-${lib.version}/resources">
 			<fileset dir="doc-resources" includes="*"/>
 		</copy>
 		<copy file="LICENSE" todir="${dir.doc}/acpj-${lib.version}" />
+		<!-- create TAR file off the versioned tree -->
 		<tar destfile="${dir.dist}/acpj-doc-${lib.version}.tar">
 			<fileset dir="${dir.doc}" />
 		</tar>
@@ -92,6 +108,7 @@
 	</target>
 	
 	<target name="src" depends="init">
+		<!-- create a tar file with all the source -->
 		<tar destfile="${dir.dist}/acpj-src-${lib.version}.tar">
 			<tarfileset prefix="acpj-${lib.version}/src" dir="${dir.src}"/>
 			<tarfileset prefix="acpj-${lib.version}/tests"  dir="${dir.tests}"/>
@@ -103,6 +120,7 @@
 	</target>
 
 	<target name="clean">
+		<!-- remove build directories -->
 	    <delete dir="${dir.build}"/>
 	    <delete dir="${dir.doc}"/>
 	    <delete dir="${dir.dist}"/>
