@@ -6,7 +6,7 @@ TBD
 
 = Implementing a Service =
 
-== The BasicService Class ==
+== The !BasicService Class ==
 
 = Provided Services =
 
