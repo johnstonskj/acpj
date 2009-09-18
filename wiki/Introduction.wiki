@@ -6,7 +6,7 @@ TBD
 
 == Dependencies ==
 
-Currently the ACP/J library has no external dependencies.
+Currently the ACP/J library has itself no external dependencies, the junit.jar is included in the lib directory for the test suite to run.
 
 = Getting Started =
 
