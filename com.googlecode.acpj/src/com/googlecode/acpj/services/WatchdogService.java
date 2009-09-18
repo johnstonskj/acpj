@@ -12,7 +12,6 @@ import java.util.logging.Level;
 import java.util.logging.LogRecord;
 
 import com.googlecode.acpj.channels.Channel;
-import com.googlecode.acpj.channels.ChannelPoisonedException;
 import com.googlecode.acpj.channels.ChannelRegistry;
 import com.googlecode.acpj.channels.WritePort;
 
@@ -34,6 +33,9 @@ public class WatchdogService extends BasicService<ActorStateMessage> {
 	 */
 	public static final String CHANNEL_NAME = "com.googlecode.acpj.services.WatchdogNotificationChannel";
 	
+	private Channel<LogRecord> loggerChannel = null;
+	private WritePort<LogRecord> loggerPort = null;
+
 	public WatchdogService() {
 		setChannelName(CHANNEL_NAME);
 	}
@@ -42,37 +44,30 @@ public class WatchdogService extends BasicService<ActorStateMessage> {
 	 * The watchdog service logic, it receives new messages, of the form
 	 * {@link ActorStateMessage} and either sends them to the logger service,
 	 * or writes them to the console.
+	 *
+	 * @param request the request read from the channel.
+	 * 
+	 * @return <code>true</code> and the service will continue to read requests.
 	 */
 	@Override
-	public void run() {
-		Channel<LogRecord> loggerChannel = null;
-		WritePort<LogRecord> loggerPort = null;
-		while (true) {
-			if (loggerChannel == null) {
-				loggerChannel = ChannelRegistry.getInstance().lookupOrNull(LogService.CHANNEL_NAME);
-				if (loggerChannel != null) {
-					loggerPort = loggerChannel.getWritePort(true);
-				}
-				try {
-					getReadPort().claim();
-				} catch (Throwable t) {
-					t.printStackTrace();
-				}
+	public boolean handleRequest(ActorStateMessage request) {
+		if (loggerChannel == null) {
+			loggerChannel = ChannelRegistry.getInstance().lookupOrNull(LogService.CHANNEL_NAME);
+			if (loggerChannel != null) {
+				loggerPort = loggerChannel.getWritePort(true);
 			}
-			ActorStateMessage message =  null;
 			try {
-				message = getNextRequest();
-			} catch (ChannelPoisonedException e) {
-				break;
+				getReadPort().claim();
 			} catch (Throwable t) {
 				t.printStackTrace();
 			}
-			final String msg = String.format("%10s - %s", message.getActorState(), message.getActorName());
-			if (loggerPort != null) {
-				loggerPort.write(new LogRecord(Level.INFO, msg));
-			} else {
-				System.out.println(String.format("%10s - %s", message.getActorState(), message.getActorName()));
-			}
 		}
+		final String msg = String.format("%10s - %s", request.getActorState(), request.getActorName());
+		if (loggerPort != null) {
+			loggerPort.write(new LogRecord(Level.INFO, msg));
+		} else {
+			System.out.println(String.format("%10s - %s", request.getActorState(), request.getActorName()));
+		}
+		return true;
 	}
 }
