@@ -1,6 +1,8 @@
 #summary Introduction to the API and basic usage
 #labels Featured
 
+<wiki:toc max_depth="2" />
+
 = Introduction =
 
 This page provides an introduction to the ACP/J API and it's intended usage, background on the ACP/J design and philosophy can be found on the [http://acpj.googlecode.com/ home page]. 
