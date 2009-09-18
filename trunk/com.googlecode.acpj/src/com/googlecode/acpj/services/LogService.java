@@ -8,11 +8,8 @@
  */
 package com.googlecode.acpj.services;
 
-import java.util.logging.Level;
 import java.util.logging.LogRecord;
 import java.util.logging.Logger;
-
-import com.googlecode.acpj.channels.ChannelPoisonedException;
 
 /**
  * <p>
@@ -31,37 +28,35 @@ public class LogService extends BasicService<LogRecord> {
 	 */
 	public static final String CHANNEL_NAME = "com.googlecode.acpj.services.LoggingChannel";
 
+	private Logger logger = null;
+	
 	/**
 	 * Construct a new log service.
 	 */
 	public LogService() {
 		setChannelName(CHANNEL_NAME);
 	}
-
+	
 	/**
-	 * Run the logger service, this basically takes standard Java 
-	 * {@link java.util.logging.LogRecord} messages and outputs them
-	 * using a default logger configuration.
+	 * Cache a Log4J Logger instance.
 	 */
 	@Override
-	public void run() {
-		Logger logger = Logger.getLogger("com.googlecode.acpj.services.logger");
-		try {
-			getReadPort().claim();
-		} catch (Throwable t) {
-			logger.log(Level.SEVERE, "Failed to claim logger port.", t);
-		}
-		while (true) {
-			LogRecord request =  null;
-			try {
-				request = getNextRequest();
-			} catch (ChannelPoisonedException e) {
-				break;
-			} catch (Throwable t) {
-				logger.log(Level.SEVERE, "Failed to read logger queue.", t);
-			}		
-			logger.log(request);
-		}
+	public void startup() {
+		this.logger = Logger.getLogger("com.googlecode.acpj.services.logger");
+		super.startup();
+	}
+
+	/**
+	 * log the request using the default Logger instance.
+	 *
+	 * @param request the request read from the channel.
+	 * 
+	 * @return <code>true</code> and the service will continue to read requests.
+	 */
+	@Override
+	public boolean handleRequest(LogRecord request) {
+		this.logger.log(request);
+		return true;
 	}
 
 }

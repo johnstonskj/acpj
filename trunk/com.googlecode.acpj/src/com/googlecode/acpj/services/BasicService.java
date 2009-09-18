@@ -13,6 +13,7 @@ import com.googlecode.acpj.actors.ActorFactory;
 import com.googlecode.acpj.channels.BufferedChannel;
 import com.googlecode.acpj.channels.ChannelException;
 import com.googlecode.acpj.channels.ChannelFactory;
+import com.googlecode.acpj.channels.ChannelPoisonedException;
 import com.googlecode.acpj.channels.ChannelRegistry;
 import com.googlecode.acpj.channels.ReadPort;
 
@@ -29,37 +30,34 @@ import com.googlecode.acpj.channels.ReadPort;
  *   <li>The service is stopped when the request queue is poisoned.</li>
  * </ul>
  * <p>
- * As an example of if it's use consider the included simple LogService:
+ * The BasicService class therefore handles the creation and registering of the 
+ * notification channel, creation of the service Actor and the base run-loop
+ * implementation. This means that many subclasses will only need to implement
+ * the {@link #handleRequest(Object)} method to process each request read by
+ * the service from the request queue. As an example of if it's use consider 
+ * the included simple LogService:
  * </p>
  * <pre>
  *    public class LogService extends BasicService<LogRecord> {
  *        
  *        public static final String CHANNEL_NAME = "com.googlecode.acpj.services.RequestChannel";
- *        public static final String ACTOR_NAME = "com.googlecode.acpj.services.LoggerActor";
+ *        
+ *        private Logger logger = null;
  *    
  *        public LogService() {
  *            setChannelName(CHANNEL_NAME);
- *            setActorName(ACTOR_NAME);
  *        }
  *    
- *        public void run() {
- *            Logger logger = Logger.getLogger("com.googlecode.acpj.services.logger");
- *            try {
- *                getReadPort().claim();
- *            } catch (Throwable t) {
- *                logger.log(Level.SEVERE, "Failed to claim logger port.", t);
- *            }
- *            while (true) {
- *                LogRecord request =  null;
- *                try {
- *                    request = getNextRequest();
- *                } catch (ChannelPoisonedException e) {
- *                    break;
- *                } catch (Throwable t) {
- *                    logger.log(Level.SEVERE, "Failed to read logger queue.", t);
- *                }        
- *                logger.log(request);
- *            }
+ *        @Override
+ *        public void startup() {
+ *            this.logger = Logger.getLogger("com.googlecode.acpj.services.logger");
+ *            super.startup();
+ *        }
+ *        
+ *        @Override
+ *        public boolean handleRequest(LogRecord request) {
+ *            this.logger.log(request);
+ *            return true;
  *        }
  *    }
  * </pre>
@@ -67,17 +65,9 @@ import com.googlecode.acpj.channels.ReadPort;
  * Starting and stopping the service and managing registration of the request queue and so
  * forth are handled by this class, in fact the <code>setChannelName</code> and
  * <code>setActorName</code> are not necessary in the constructor as default names will
- * be chosen if not supplied. The basic structure of a <code>run()</code> method is now: 
+ * be chosen if not supplied. 
  * </p>
- * <ul>
- *   <li>claim the read port - <code>getReadPort().claim()</code>.</li>
- *   <li>some form of loop, usually <code>while(true)</code>.</li>
- *   <li>fetch the next request from the queue - <code>request = getNextRequest()</code>.</li>
- *   <li>process the request, sending out other messages, or even replying to
- *       this request (see {@link com.googlecode.acpj.channels.util.RequestWithCallbackPattern}).<li>
- *   <li>on the read detect the {@link com.googlecode.acpj.channels.ChannelPoisonedException}
- *       and exit the loop.</li>
- * </ul>
+ * 
  * @author Simon Johnston (simon@johnstonshome.org)
  * @since 0.1.0
  * 
@@ -208,8 +198,83 @@ public abstract class BasicService<RT> implements Runnable {
 	}
 	
 	/**
+	 * Subclasses should override this to provide logic before the main run-loop
+	 * initializes.
+	 */
+	public void startup() { }
+	
+	/**
+	 * Subclasses must override this to handle each request messages read from the 
+	 * request channel. The handler returns <code>true</code> if the service should
+	 * continue to read requests, <code>false</code> and the service will shut down. 
+	 * 
+	 * @param request the request read from the channel.
+	 * 
+	 * @return <code>true</code> and the service will continue to read requests.
+	 */
+	public abstract boolean handleRequest(RT request);
+	
+	/**
+	 * Subclasses should override this to provide logic after the main run-loop
+	 * terminates and before the Actor completes.
+	 */
+	public void shutdown() { }
+	
+	/**
 	 * This is the actual service method that will process request messages.
 	 */
-	public abstract void run(); 
+	public void run() {
+		/*
+		 * Call the handler class to initialize.
+		 */
+		startup();
+		
+		/*
+		 * Retrieve and claim the port for the request channel.
+		 */
+		try {
+			getReadPort().claim();
+		} catch (Throwable t) {
+			t.printStackTrace();
+		}
+		
+		/*
+		 * This is the main service run-loop. 
+		 */
+		boolean running = true;
+		while (running) {
+			RT request =  null;
+			try {
+				/*
+				 * Read a message from the request queue.
+				 */
+				request = getNextRequest();
+			} catch (ChannelPoisonedException e) {
+				/*
+				 * Terminate, DO NOT reset the running flag.
+				 */
+				break;
+			} catch (Throwable t) {
+				t.printStackTrace();
+			}		
+			/*
+			 * Call the handler to process this request.
+			 */
+			running = handleRequest(request);
+		}
+		
+		/*
+		 * If the handler exited the loop (not a poison case) then close the
+		 * request channel read port.
+		 */
+		if (!running) {
+			getReadPort().close();
+		}
+
+		/*
+		 * Now call the handler again to do any clean-up before we exit.
+		 */
+		shutdown();
+	}
 	
 }
