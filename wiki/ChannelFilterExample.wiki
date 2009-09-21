@@ -59,17 +59,19 @@ The code in the following example creates three actors, one which generates a se
     Channel rawChannel = ChannelFactory.getInstance().createOneToOneChannel(); 
     Channel filteredChannel = ChannelFactory.getInstance().createOneToOneChannel();
         
-    ActorFactory.getInstance().createActor(
+    ActorJoinPool pool = new BasicActorJoinPool();
+
+    pool.addActor(
         new NumberPrinter(filteredChannel.getReadPort(false)), 
         "NumberPrinter");
-    ActorFactory.getInstance().createActor(
+    pool.addActor(
         new ChannelFilter(rawChannel.getReadPort(false), filteredChannel.getWritePort(false), new NumberFilter(), true), 
         "ChannelFilter");
-    ActorFactory.getInstance().createActor(
+    pool.addActor(
         new RandomNumberGenerator(rawChannel.getWritePort(false), 50), 
         "RandomNumberGenerator");
         
-    Thread.sleep(1000);
+    pool.joinAll();
 }}}
 
 The following provides some more details.
