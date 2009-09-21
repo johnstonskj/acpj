@@ -16,6 +16,8 @@ TBD
 
 TBD
 
+For a more complete example, see the ChannelFilterExample wiki page.
+
 == Join Set ==
 
 TBD
