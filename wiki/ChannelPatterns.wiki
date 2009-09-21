@@ -2,7 +2,7 @@
 
 = Introduction =
 
-The `com.googlecode.acpj.patterns` package contains a set of helper classes that provide the implementation of common patterns such as the request-response, filter and join-set. These patterns are general enough to be used as-is but simple enough that they can be replaced if necessary by more app-specific versions if you need them. 
+The `com.googlecode.acpj.patterns` package contains a set of helper classes that provide the implementation of common patterns such as the request-response, message filter and join-pool. These patterns are general enough to be used as-is but simple enough that they can be replaced if necessary by more app-specific versions if you need them. 
 
 = Provided Patterns =
 
@@ -18,6 +18,6 @@ TBD
 
 For a more complete example, see the ChannelFilterExample wiki page.
 
-== Join Set ==
+== Join Pool ==
 
 TBD
