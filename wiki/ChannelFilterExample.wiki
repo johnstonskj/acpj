@@ -2,7 +2,7 @@
 
 = Introduction =
 
-The code in the following example creates three actors, one which generates a series of random numbers between 0 and 100 and writes them out to a channel. Another process reads numbers from a channel and prints them. However, while we could have these two share the same channel and print out all the numbers generated we only want to print numbers greater than 50 so we use the *ChannelFilter* pattern to inject another actor that reads the channel of all numbers, filters out the unwanted ones and passes the rest on to the printing actor.
+The code in the following example creates three actors, one which generates a series of random numbers between 0 and 100 and writes them out to a channel. Another process reads numbers from a channel and prints them. However, while we could have these two share the same channel and print out all the numbers generated we only want to print numbers greater than 50 so we use the *!ChannelFilter* pattern to inject another actor that reads the channel of all numbers, filters out the unwanted ones and passes the rest on to the printing actor.
 
 {{{
     public class RandomNumberGenerator implements Runnable {
