@@ -15,6 +15,8 @@ import com.googlecode.acpj.channels.ChannelFactory;
 import com.googlecode.acpj.channels.ChannelRegistry;
 import com.googlecode.acpj.channels.ReadPort;
 import com.googlecode.acpj.channels.WritePort;
+import com.googlecode.acpj.patterns.ActorJoinPool;
+import com.googlecode.acpj.patterns.BasicActorJoinPool;
 
 import junit.framework.TestCase;
 
@@ -70,14 +72,17 @@ public class EndToEndTests extends TestCase {
 	
 	public void testCreateLoggerExample() throws Exception {
 		System.out.println(String.format("===== %s =====", getName()));
+				
 		ActorFactory.getInstance().createActor(new LoggerActor());
 		Thread.sleep(2000);
 		
+		ActorJoinPool pool = new BasicActorJoinPool();
+
 		for (int i = 0; i < 5; i++) {
-			ActorFactory.getInstance().createActor(new NumberGenerator(i));
+			pool.createActor(new NumberGenerator(i));
 		}
 		
-		Thread.sleep(2000);
+		pool.joinAll();
 	}
 
 }

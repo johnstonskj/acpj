@@ -12,6 +12,8 @@ import java.net.URI;
 
 import com.googlecode.acpj.actors.Actor;
 import com.googlecode.acpj.actors.ActorFactory;
+import com.googlecode.acpj.patterns.ActorJoinPool;
+import com.googlecode.acpj.patterns.BasicActorJoinPool;
 
 import junit.framework.Assert;
 import junit.framework.TestCase;
@@ -29,6 +31,20 @@ public class SimpleActorTests extends TestCase {
 	public class SimpleActor implements Runnable {
 		public void run() {
 			System.out.println(String.format("Actor <%s> running.", ActorFactory.getInstance().getCurrentActor().getName()));			
+		}
+	}
+	
+	public class SimpleActorWithSleep implements Runnable {
+		public void run() {
+			System.out.println(String.format("Actor <%s> sleeping.", ActorFactory.getInstance().getCurrentActor().getName()));
+			try {
+				for (int i = 0; i < 10; i++) {
+					Thread.sleep(100);
+				}
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+			System.out.println(String.format("Actor <%s> ending.", ActorFactory.getInstance().getCurrentActor().getName()));			
 		}
 	}
 	
@@ -80,4 +96,33 @@ public class SimpleActorTests extends TestCase {
 		Assert.assertTrue(actor.getName().contains("/my simple actor/"));
 	}
 
+	public void test004_CreateActorJoinPoolAll() throws Exception {
+		System.out.println(String.format("===== %s =====", getName()));
+		
+		ActorJoinPool pool = new BasicActorJoinPool();
+		pool.createActor(new SimpleActorWithSleep());
+		pool.createActor(new SimpleActorWithSleep());
+		pool.createActor(new SimpleActorWithSleep());
+		pool.createActor(new SimpleActorWithSleep());
+		pool.createActor(new SimpleActorWithSleep());
+		
+		System.out.println("About to join");
+		pool.joinAll();
+		System.out.println("Completed join");
+	}
+
+	public void test005_CreateActorJoinPoolAny() throws Exception {
+		System.out.println(String.format("===== %s =====", getName()));
+		
+		ActorJoinPool pool = new BasicActorJoinPool();
+		pool.createActor(new SimpleActorWithSleep());
+		pool.createActor(new SimpleActorWithSleep());
+		pool.createActor(new SimpleActorWithSleep());
+		pool.createActor(new SimpleActorWithSleep());
+		pool.createActor(new SimpleActorWithSleep());
+		
+		System.out.println("About to join");
+		pool.joinAny();
+		System.out.println("Completed join");
+	}
 }

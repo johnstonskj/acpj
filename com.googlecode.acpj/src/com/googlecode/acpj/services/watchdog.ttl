@@ -1,11 +1,12 @@
 @prefix acp: <http://acpj.googlecode.com/vocab#> .
 @prefix svc: <http://acpj.googlecode.com/services#> .
+@prefix dc:  <http://purl.org/dc/elements/1.1/> .
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
 
 svc:WatchdogService 
 	a 					acp:Service ;
+	dc:title 			"Watchdog Service" ;
 	acp:startup			"auto" ;
-	acp:actorName 		"com.googlecode.acpj.services.WatchdogServiceActor" ;
 	acp:actorClassName 	"com.googlecode.acpj.services.WatchdogServiceActor" ;
 	acp:requestChannel	[
 		acp:channelName		"com.googlecode.acpj.services.NotificationChannel" ;

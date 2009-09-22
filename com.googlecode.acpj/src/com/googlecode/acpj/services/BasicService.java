@@ -48,13 +48,11 @@ import com.googlecode.acpj.channels.ReadPort;
  *            setChannelName(CHANNEL_NAME);
  *        }
  *    
- *        @Override
  *        public void startup() {
  *            this.logger = Logger.getLogger("com.googlecode.acpj.services.logger");
  *            super.startup();
  *        }
  *        
- *        @Override
  *        public boolean handleRequest(LogRecord request) {
  *            this.logger.log(request);
  *            return true;
@@ -94,7 +92,7 @@ public abstract class BasicService<RT> implements Runnable {
 	 *  
 	 * @return the channel name as used in the channel registry.
 	 */
-	protected String getChannelName() {
+	public String getChannelName() {
 		return channelName;
 	}
 
@@ -114,7 +112,7 @@ public abstract class BasicService<RT> implements Runnable {
 	 * 
 	 * @return the name of the service actor.
 	 */
-	protected String getActorName() {
+	public String getActorName() {
 		return actorName;
 	}
 
@@ -217,8 +215,11 @@ public abstract class BasicService<RT> implements Runnable {
 	/**
 	 * Subclasses should override this to provide logic after the main run-loop
 	 * terminates and before the Actor completes.
+	 * 
+	 * @param poisoned will be <code>true</code> if the service is exiting due
+	 *        to the request channel being poisoned.
 	 */
-	public void shutdown() { }
+	public void shutdown(boolean poisoned) { }
 	
 	/**
 	 * This is the actual service method that will process request messages.
@@ -274,7 +275,7 @@ public abstract class BasicService<RT> implements Runnable {
 		/*
 		 * Now call the handler again to do any clean-up before we exit.
 		 */
-		shutdown();
+		shutdown(this.requestChannel.isPoisoned());
 	}
 	
 }

@@ -6,7 +6,7 @@
  * distribution of this code.
  * 
  */
-package com.googlecode.acpj.channels.util;
+package com.googlecode.acpj.patterns;
 
 import com.googlecode.acpj.channels.Channel;
 import com.googlecode.acpj.channels.ChannelFactory;

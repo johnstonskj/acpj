@@ -215,16 +215,18 @@ public class ChannelMonitorOutput {
 			}
 			for (Iterator<MonitoredPort> iterator2 = channel.getReadPorts(); iterator2.hasNext();) {
 				final MonitoredPort port = iterator2.next();
-				final String actorsName = port.getOwningActor().getName();
-				final String style = port.isClosed() ? "[style=\"dashed\"]" : "[style=\"solid\"]";
-				if (actorMap.containsKey(actorsName)) {
-					final String actorName = actorMap.get(actorsName); 
-					os.write(String.format("  channel_%d -> %s %s;\n", channelId, actorName, style).getBytes(ENCODING));
-				} else {
-					os.write(String.format("  node [shape=\"ellipse\" fillcolor=\"lightgray\", style=\"filled\" label=\"%s\"] actor_%d;\n", actorsName, port.getOwningActor().getLocalId()).getBytes(ENCODING));
-					final String actorName = String.format("actor_%d", port.getOwningActor().getLocalId());
-					actorMap.put(actorsName, actorName);
-					os.write(String.format("  channel_%d -> %s %s;\n", channelId, actorName, style).getBytes(ENCODING));
+				if (port.getOwningActor() != null) {
+					final String actorsName = port.getOwningActor().getName();
+					final String style = port.isClosed() ? "[style=\"dashed\"]" : "[style=\"solid\"]";
+					if (actorMap.containsKey(actorsName)) {
+						final String actorName = actorMap.get(actorsName); 
+						os.write(String.format("  channel_%d -> %s %s;\n", channelId, actorName, style).getBytes(ENCODING));
+					} else {
+						os.write(String.format("  node [shape=\"ellipse\" fillcolor=\"lightgray\", style=\"filled\" label=\"%s\"] actor_%d;\n", actorsName, port.getOwningActor().getLocalId()).getBytes(ENCODING));
+						final String actorName = String.format("actor_%d", port.getOwningActor().getLocalId());
+						actorMap.put(actorsName, actorName);
+						os.write(String.format("  channel_%d -> %s %s;\n", channelId, actorName, style).getBytes(ENCODING));
+					}
 				}
 			}
 			channelId++;

@@ -29,14 +29,14 @@ provided actors as they are or to extend them into new function.
 <ul>
   <li>Patterns:
     <ul>
-      <li>{@link com.googlecode.acpj.channels.util.RequestWithCallbackPattern} -- A 
+      <li>{@link com.googlecode.acpj.patterns.RequestWithCallbackPattern} -- A 
           common pattern where one actor makes a request for some service to another
           actor and has to provide in the request a callback port for the result to
           be sent to.</li>
-      <li>{@link com.googlecode.acpj.channels.util.ChannelOperation} -- An interface 
+      <li>{@link com.googlecode.acpj.patterns.ChannelOperation} -- An interface 
           that represents a simple, but powerful function that can filter messages
           between two actors, transform the messages or simply monitor them.</li>
-      <li>{@link com.googlecode.acpj.channels.util.ChannelFilter} -- An Actor that
+      <li>{@link com.googlecode.acpj.patterns.ChannelFilter} -- An Actor that
           uses a ChannelOperation as a filter and filters the messages between 
           two actors.</li>
     </ul>
