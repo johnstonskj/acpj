@@ -22,10 +22,10 @@ import com.googlecode.acpj.channels.ChannelRegistry;
 import com.googlecode.acpj.channels.PortArity;
 import com.googlecode.acpj.channels.ReadPort;
 import com.googlecode.acpj.channels.WritePort;
-import com.googlecode.acpj.channels.util.ChannelFilter;
-import com.googlecode.acpj.channels.util.ChannelOperation;
-import com.googlecode.acpj.channels.util.Request;
-import com.googlecode.acpj.channels.util.RequestWithCallbackPattern;
+import com.googlecode.acpj.patterns.ChannelFilter;
+import com.googlecode.acpj.patterns.ChannelOperation;
+import com.googlecode.acpj.patterns.Request;
+import com.googlecode.acpj.patterns.RequestWithCallbackPattern;
 import com.googlecode.acpj.services.LogService;
 import com.googlecode.acpj.services.WatchdogService;
 
@@ -101,8 +101,8 @@ public class SimpleChannelTests extends TestCase {
 		}
 		public void run() {
 			try {
-				String name = ActorFactory.getInstance().getCurrentActor().getName();
 				ReadPort<String> readPort = channel.getReadPort(true);
+				final String name = readPort.getOwningActor().getName();
 				System.out.println("ChannelConsumer " + name + ", about to read.");
 				while (true) {
 					try {
@@ -128,9 +128,9 @@ public class SimpleChannelTests extends TestCase {
 		}
 		public void run() {
 			try {
-				String name = ActorFactory.getInstance().getCurrentActor().getName();
 				WritePort<String> writePort = channel.getWritePort(true);
-				int count = new Random(System.currentTimeMillis()).nextInt(limit) + 1;
+				final String name = writePort.getOwningActor().getName();
+				final int count = new Random(System.currentTimeMillis()).nextInt(limit) + 1;
 				System.out.println("ChannelProducer " + name + ", writing " + count + " messages.");
 				for (int i = 0; i < count; i++) {
 					try {

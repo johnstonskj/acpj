@@ -28,6 +28,10 @@ by programmers to monitor their applications as the build and use actors.
 <ul>
   <li>Services:
     <ul>
+      <li>{@link com.googlecode.acpj.services.BasicService} -- The main 
+          framework class that implements the structure and run-loop for
+          a service and allows implementors to focus on simply handling
+          each request as the service provides it to them.
       <li>{@link com.googlecode.acpj.services.LogService} -- An actor-based
           facade over the standard Java logging, allows LogRecord instances
           to be sent to a common actor.</li>

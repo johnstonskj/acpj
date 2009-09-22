@@ -97,7 +97,7 @@
 		  	nonavbar="false" 
 		  	notree="false" 
 		  	overview="${dir.src}/com/googlecode/acpj/overview.html" 
-		  	packagenames="com.googlecode.acpj.channels,com.googlecode.acpj.actors,com.googlecode.acpj,com.googlecode.acpj.channels.monitor,com.googlecode.acpj.channels.util,com.googlecode.acpj.services,com.googlecode.acpj.services.logger" 
+		  	packagenames="com.googlecode.acpj.channels,com.googlecode.acpj.actors,com.googlecode.acpj,com.googlecode.acpj.channels.monitor,com.googlecode.acpj.patterns,com.googlecode.acpj.services,com.googlecode.acpj.services.logger" 
 		  	source="1.5" 
 		  	sourcepath="${dir.src}" 
 		  	splitindex="true" 
