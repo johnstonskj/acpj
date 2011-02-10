@@ -1,0 +1,13 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: ACPJ Library
+Bundle-SymbolicName: com.googlecode.acpj
+Bundle-Version: 0.1.0.qualifier
+Export-Package: com.googlecode.acpj,
+ com.googlecode.acpj.actors,
+ com.googlecode.acpj.channels,
+ com.googlecode.acpj.patterns,
+ com.googlecode.acpj.services
+Bundle-Vendor: Simon Johnston
+Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Import-Package: junit.framework
