@@ -44,16 +44,11 @@
 	
 	<target name="lib" depends="compile">
 		<!-- create the JAR for the library -->
-		<jar destfile="${dir.dist}/acpj-${lib.version}.jar">
+		<jar destfile="${dir.dist}/acpj-${lib.version}.jar" manifest="META-INF/MANIFEST.MF">
 			<fileset 
 				dir="${dir.build}" 
 				excludes="**/*Tests.class"/>
 			<filename name="LICENSE"/>
-			<manifest>
-				<attribute name="Built-By" value="${user.name}"/>
-		      	<attribute name="Implementation-Title" value="${lib.name}}"/>
-		      	<attribute name="Implementation-Version" value="${lib.version}"/>
-			</manifest>
 		</jar>
 	</target>
 	
@@ -136,4 +131,6 @@
 	    <delete dir="${dir.dist}"/>
 	</target>
 
+	<target name="release" depends="lib,doc,test"/>
+	
 </project>
