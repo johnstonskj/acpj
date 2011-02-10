@@ -66,10 +66,10 @@ public class SimpleChannelTests extends TestCase {
 			this.channel = channel;
 		}
 		public void run() {
-			System.out.println("ChannelReader " + channel.getName() + ", about to read");
+			System.out.println("ChannelReader " + this.channel.getName() + ", about to read");
 			try {
-				T value = channel.getReadPort(true).read();
-				System.out.println("ChannelReader " + channel.getName() + ", read " + value.toString());
+				T value = this.channel.getReadPort(true).read();
+				System.out.println("ChannelReader " + this.channel.getName() + ", read " + value.toString());
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
@@ -84,10 +84,10 @@ public class SimpleChannelTests extends TestCase {
 			this.value = value;
 		}
 		public void run() {
-			System.out.println("ChannelWriter " + channel.getName() + ", about to write " + this.value.toString());
+			System.out.println("ChannelWriter " + this.channel.getName() + ", about to write " + this.value.toString());
 			try {
-				channel.getWritePort(true).write(this.value);
-				System.out.println("ChannelWriter " + channel.getName() + ", done.");
+				this.channel.getWritePort(true).write(this.value);
+				System.out.println("ChannelWriter " + this.channel.getName() + ", done.");
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
@@ -101,7 +101,7 @@ public class SimpleChannelTests extends TestCase {
 		}
 		public void run() {
 			try {
-				ReadPort<String> readPort = channel.getReadPort(true);
+				ReadPort<String> readPort = this.channel.getReadPort(true);
 				final String name = readPort.getOwningActor().getName();
 				System.out.println("ChannelConsumer " + name + ", about to read.");
 				while (true) {
@@ -128,9 +128,9 @@ public class SimpleChannelTests extends TestCase {
 		}
 		public void run() {
 			try {
-				WritePort<String> writePort = channel.getWritePort(true);
+				WritePort<String> writePort = this.channel.getWritePort(true);
 				final String name = writePort.getOwningActor().getName();
-				final int count = new Random(System.currentTimeMillis()).nextInt(limit) + 1;
+				final int count = new Random(System.currentTimeMillis()).nextInt(this.limit) + 1;
 				System.out.println("ChannelProducer " + name + ", writing " + count + " messages.");
 				for (int i = 0; i < count; i++) {
 					try {
@@ -154,12 +154,12 @@ public class SimpleChannelTests extends TestCase {
 			this.count = count;
 		}
 		public void run() {
-			writePort.claim();
+			this.writePort.claim();
 			Random random = new Random();
 			for (int i = 0; i < this.count; i++) {
-				writePort.write(new Integer(random.nextInt(100)));
+				this.writePort.write(new Integer(random.nextInt(100)));
 			}
-			writePort.poison();
+			this.writePort.poison();
 		}
 	}
 	
@@ -180,10 +180,10 @@ public class SimpleChannelTests extends TestCase {
 		}
 		public void run() {
 			try {
-				readPort.claim();
+				this.readPort.claim();
 				while (true) {
 					try {
-						Integer number = readPort.read();
+						Integer number = this.readPort.read();
 						System.out.println("Received " + number);
 					} catch (ChannelPoisonedException e) {
 						break;

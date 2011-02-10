@@ -25,19 +25,19 @@ import junit.framework.TestCase;
  */
 public class ZBQTests extends TestCase {
 	
-	private Random random = new Random();
-
 	class Producer implements Runnable {
 		private BlockingQueue<String> queue = null;
-		public Producer(BlockingQueue<String> queue) {
+		private Random random = null;
+		public Producer(BlockingQueue<String> queue, Random random) {
 			this.queue = queue;
+			this.random = random;
 		}
 		public void run() {
 			try {
 				for (int i = 0; i < 10; i++) {
-					Thread.sleep(random.nextInt(10000));
+					Thread.sleep(this.random.nextInt(10000));
 					System.out.println("<<< about to put to queue.");
-					queue.put("here is message " + i);
+					this.queue.put("here is message " + i);
 					System.out.println("<<< put to queue.");
 				}
 				System.out.println("<<< done putting to queue.");
@@ -49,20 +49,22 @@ public class ZBQTests extends TestCase {
 
 	class Consumer implements Runnable {
 		private BlockingQueue<String> queue = null;
-		public Consumer(BlockingQueue<String> queue) {
+		private Random random = null;
+		public Consumer(BlockingQueue<String> queue, Random random) {
 			this.queue = queue;
+			this.random = random;
 		}
 		public void run() {
 			try {
 				while (true) {
 					System.out.println("<<< about to take from queue.");
-					String value = queue.take();
+					String value = this.queue.take();
 					System.out.println("<<< taken '" + value + "' from queue.");
 					if (value.equals("")) {
 						System.out.println("<<< done taking from queue.");
 						break;
 					} 
-					Thread.sleep(random.nextInt(10000));
+					Thread.sleep(this.random.nextInt(10000));
 				}
 			} catch (Exception e) {
 				e.printStackTrace();
@@ -71,10 +73,11 @@ public class ZBQTests extends TestCase {
 	}
 
 	public void testZeroBlockingQueue() throws Exception {
+		Random random = new Random();
 		BlockingQueue<String> queue = new ZeroBlockingQueue<String>();
 
-		Thread consumer = new Thread(new Consumer(queue));
-		Thread producer = new Thread(new Producer(queue));
+		Thread consumer = new Thread(new Consumer(queue, random));
+		Thread producer = new Thread(new Producer(queue, random));
 		
 		consumer.start();
 		producer.start();

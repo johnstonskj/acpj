@@ -37,10 +37,10 @@ class MonitoredChannelImpl implements MonitoredChannel {
 			this.actualPort = actual;
 		}
 		public Actor getOwningActor() {
-			return actualPort.getOwningActor();
+			return this.actualPort.getOwningActor();
 		}
 		public boolean isClosed() {
-			return actualPort.isClosed();
+			return this.actualPort.isClosed();
 		}
 	}
 	
@@ -50,10 +50,10 @@ class MonitoredChannelImpl implements MonitoredChannel {
 			this.actual = actual;
 		}
 		public boolean hasNext() {
-			return actual.hasNext();
+			return this.actual.hasNext();
 		}
 		public MonitoredPort next() {
-			return actual.next();
+			return this.actual.next();
 		}
 		public void remove() {
 			throw new UnsupportedOperationException();
@@ -70,7 +70,7 @@ class MonitoredChannelImpl implements MonitoredChannel {
 	 */
 	public int getBufferCapacity() {
 		if (isBuffered()) {
-			return actualChannel.getBufferCapacity();
+			return this.actualChannel.getBufferCapacity();
 		}
 		return 0;
 	}
@@ -80,7 +80,7 @@ class MonitoredChannelImpl implements MonitoredChannel {
 	 * @see com.googlecode.acpj.channels.MonitoredChannel#getName()
 	 */
 	public String getName() {
-		return actualChannel.getName();
+		return this.actualChannel.getName();
 	}
 
 	/*
@@ -88,7 +88,7 @@ class MonitoredChannelImpl implements MonitoredChannel {
 	 * @see com.googlecode.acpj.channels.MonitoredChannel#getReadPortArity()
 	 */
 	public PortArity getReadPortArity() {
-		return actualChannel.getReadPortArity();
+		return this.actualChannel.getReadPortArity();
 	}
 
 	/*
@@ -97,7 +97,7 @@ class MonitoredChannelImpl implements MonitoredChannel {
 	 */
 	public Iterator<MonitoredPort> getReadPorts() {
 		Set<MonitoredPort> ports = new HashSet<MonitoredPort>();
-		Iterator<?> readPorts = actualChannel.getReadPorts();
+		Iterator<?> readPorts = this.actualChannel.getReadPorts();
 		while (readPorts.hasNext()) {
 			ports.add(new MonitoredPortImpl((Port<?>)readPorts.next()));
 		}
@@ -109,7 +109,7 @@ class MonitoredChannelImpl implements MonitoredChannel {
 	 * @see com.googlecode.acpj.channels.MonitoredChannel#getWritePortArity()
 	 */
 	public PortArity getWritePortArity() {
-		return actualChannel.getWritePortArity();
+		return this.actualChannel.getWritePortArity();
 	}
 
 	/*
@@ -118,7 +118,7 @@ class MonitoredChannelImpl implements MonitoredChannel {
 	 */
 	public Iterator<MonitoredPort> getWritePorts() {
 		Set<MonitoredPort> ports = new HashSet<MonitoredPort>();
-		Iterator<?> writePorts = actualChannel.getWritePorts();
+		Iterator<?> writePorts = this.actualChannel.getWritePorts();
 		while (writePorts.hasNext()) {
 			ports.add(new MonitoredPortImpl((Port<?>)writePorts.next()));
 		}
@@ -130,7 +130,7 @@ class MonitoredChannelImpl implements MonitoredChannel {
 	 * @see com.googlecode.acpj.channels.MonitoredChannel#isBuffered()
 	 */
 	public boolean isBuffered() {
-		return actualChannel.getBufferCapacity() != 0;
+		return this.actualChannel.getBufferCapacity() != 0;
 	}
 
 	/*
@@ -138,7 +138,7 @@ class MonitoredChannelImpl implements MonitoredChannel {
 	 * @see com.googlecode.acpj.channels.MonitoredChannel#size()
 	 */
 	public int size() {
-		return actualChannel.size();
+		return this.actualChannel.size();
 	}
 
 	/*
@@ -146,7 +146,7 @@ class MonitoredChannelImpl implements MonitoredChannel {
 	 * @see com.googlecode.acpj.channels.MonitoredChannel#isPoisoned()
 	 */
 	public boolean isPoisoned() {
-		return actualChannel.isPoisoned();
+		return this.actualChannel.isPoisoned();
 	}
 
 }

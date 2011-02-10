@@ -31,6 +31,7 @@ public class DefaultChannelRegistry extends ChannelRegistry {
 	 * (non-Javadoc)
 	 * @see com.googlecode.acpj.channels.ChannelRegistry#deregister(java.lang.String)
 	 */
+	@Override
 	public boolean deregister(String publicName) {
 		return (registry.remove(publicName) != null);
 	}
@@ -39,6 +40,7 @@ public class DefaultChannelRegistry extends ChannelRegistry {
 	 * (non-Javadoc)
 	 * @see com.googlecode.acpj.channels.ChannelRegistry#register(com.googlecode.acpj.channels.Channel, java.lang.String, boolean)
 	 */
+	@Override
 	public boolean register(Channel<?> channel, String publicName, boolean remotable) {
 		return (registry.put(publicName, channel) == null);
 	}
@@ -47,6 +49,7 @@ public class DefaultChannelRegistry extends ChannelRegistry {
 	 * (non-Javadoc)
 	 * @see com.googlecode.acpj.channels.ChannelRegistry#lookup(java.lang.String)
 	 */
+	@Override
 	@SuppressWarnings("unchecked")
 	public <T> Channel<T> lookup(String publicName) throws IllegalArgumentException, UnknownError {
 		Channel<T> channel = (Channel<T>) lookupOrNull(publicName);
@@ -60,6 +63,7 @@ public class DefaultChannelRegistry extends ChannelRegistry {
 	 * (non-Javadoc)
 	 * @see com.googlecode.acpj.channels.ChannelRegistry#lookupOrNull(java.lang.String)
 	 */
+	@Override
 	@SuppressWarnings("unchecked")
 	public <T> Channel<T> lookupOrNull(String publicName) throws IllegalArgumentException {
 		if (publicName == null) {

@@ -84,13 +84,13 @@ public class SimpleChannel<T> implements BufferedChannel<T>, SimpleMonitoredChan
 			throw new IllegalArgumentException("Write port limit may not be zero.");
 		}
 		this.writePortLimit = writePortLimit;
-		writePorts = new HashSet<WritePort<T>>(this.writeArity == PortArity.ONE ? 1 : 10);
+		this.writePorts = new HashSet<WritePort<T>>(this.writeArity == PortArity.ONE ? 1 : 10);
 
 		this.capacity = capacity;
 		if (this.capacity == 0) {
-			values = new SynchronousQueue<Item<T>>(true);
+			this.values = new SynchronousQueue<Item<T>>(true);
 		} else {
-			values = new LinkedBlockingQueue<Item<T>>(this.capacity == BUFFER_CAPACITY_UNLIMITED ? Integer.MAX_VALUE : this.capacity);
+			this.values = new LinkedBlockingQueue<Item<T>>(this.capacity == BUFFER_CAPACITY_UNLIMITED ? Integer.MAX_VALUE : this.capacity);
 		}
 	}
 
@@ -100,7 +100,7 @@ public class SimpleChannel<T> implements BufferedChannel<T>, SimpleMonitoredChan
 		}
 		T value = null;
 		try {
-			Item<T> temp = values.take();
+			Item<T> temp = this.values.take();
 			value = temp.data;
 		} catch (InterruptedException e) {
 			throw new ChannelException(e);
@@ -121,7 +121,7 @@ public class SimpleChannel<T> implements BufferedChannel<T>, SimpleMonitoredChan
 		try {
 			Item<T> temp = new Item<T>();
 			temp.data = value;
-			values.put(temp);
+			this.values.put(temp);
 		} catch (InterruptedException e) {
 			throw new ChannelException(e);
 		}
@@ -139,18 +139,24 @@ public class SimpleChannel<T> implements BufferedChannel<T>, SimpleMonitoredChan
 		if (isPoisoned()) {
 			throw new ChannelPoisonedException();
 		}
-		if (readArity == PortArity.ONE) {
-			if (readPorts.size() == 0) {
-				ReadPort<T> newPort = new SimpleReadPort<T>(this, readPortLimit, claimed ? ActorFactory.getInstance().getCurrentActor() : null);
-				if (readPorts.add(newPort) == true) {
+		if (this.readArity == PortArity.ONE) {
+			if (this.readPorts.size() == 0) {
+				ReadPort<T> newPort = new SimpleReadPort<T>(
+						this, 
+						this.readPortLimit, 
+						claimed ? ActorFactory.getInstance().getCurrentActor() : null);
+				if (this.readPorts.add(newPort) == true) {
 					return newPort;
 				}
 			} else {
 				throw new ChannelException("Port arity invalid for write port.");
 			}
 		} else {
-			ReadPort<T> newPort = new SimpleReadPort<T>(this, readPortLimit, claimed ? ActorFactory.getInstance().getCurrentActor() : null);
-			if (readPorts.add(newPort) == true) {
+			ReadPort<T> newPort = new SimpleReadPort<T>(
+					this, 
+					this.readPortLimit, 
+					claimed ? ActorFactory.getInstance().getCurrentActor() : null);
+			if (this.readPorts.add(newPort) == true) {
 				return newPort;
 			}
 		}
@@ -170,7 +176,7 @@ public class SimpleChannel<T> implements BufferedChannel<T>, SimpleMonitoredChan
 	 * @see com.googlecode.acpj.channels.Channel#getLocalId()
 	 */
 	public long getLocalId() {
-		return id;
+		return this.id;
 	}
 
 	/*
@@ -209,18 +215,24 @@ public class SimpleChannel<T> implements BufferedChannel<T>, SimpleMonitoredChan
 		if (isPoisoned()) {
 			throw new ChannelPoisonedException();
 		}
-		if (writeArity == PortArity.ONE) {
-			if (writePorts.size() == 0) {
-				WritePort<T> newPort = new SimpleWritePort<T>(this, writePortLimit, claimed ? ActorFactory.getInstance().getCurrentActor() : null);
-				if (writePorts.add(newPort) == true) {
+		if (this.writeArity == PortArity.ONE) {
+			if (this.writePorts.size() == 0) {
+				WritePort<T> newPort = new SimpleWritePort<T>(
+						this, 
+						this.writePortLimit, 
+						claimed ? ActorFactory.getInstance().getCurrentActor() : null);
+				if (this.writePorts.add(newPort) == true) {
 					return newPort;
 				}
 			} else {
 				throw new ChannelException("Port arity invalid for write port.");
 			}
 		} else {
-			WritePort<T> newPort = new SimpleWritePort<T>(this, writePortLimit, claimed ? ActorFactory.getInstance().getCurrentActor() : null);
-			if (writePorts.add(newPort) == true) {
+			WritePort<T> newPort = new SimpleWritePort<T>(
+					this, 
+					this.writePortLimit, 
+					claimed ? ActorFactory.getInstance().getCurrentActor() : null);
+			if (this.writePorts.add(newPort) == true) {
 				return newPort;
 			}
 		}
@@ -229,9 +241,9 @@ public class SimpleChannel<T> implements BufferedChannel<T>, SimpleMonitoredChan
 	
 	public void closePort(Port<T> port) {
 		if (port instanceof ReadPort<?>) {
-			readPorts.remove(port);
+			this.readPorts.remove(port);
 		} else {
-			writePorts.remove(port);
+			this.writePorts.remove(port);
 		}
 	}
 
@@ -240,7 +252,7 @@ public class SimpleChannel<T> implements BufferedChannel<T>, SimpleMonitoredChan
 	 * @see com.googlecode.acpj.channels.Channel#getWritePortArity()
 	 */
 	public PortArity getWritePortArity() {
-		return writeArity;
+		return this.writeArity;
 	}
 
 	/*
@@ -314,7 +326,7 @@ public class SimpleChannel<T> implements BufferedChannel<T>, SimpleMonitoredChan
 	 * @see com.googlecode.acpj.internal.channels.SimpleMonitoredChannel#getReadPorts()
 	 */
 	public Iterator<ReadPort<T>> getReadPorts() {
-		return readPorts.iterator();
+		return this.readPorts.iterator();
 	}
 
 	/*
@@ -322,6 +334,6 @@ public class SimpleChannel<T> implements BufferedChannel<T>, SimpleMonitoredChan
 	 * @see com.googlecode.acpj.internal.channels.SimpleMonitoredChannel#getWritePorts()
 	 */
 	public Iterator<WritePort<T>> getWritePorts() {
-		return writePorts.iterator();
+		return this.writePorts.iterator();
 	}
 }

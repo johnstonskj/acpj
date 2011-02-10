@@ -37,8 +37,8 @@ import java.util.concurrent.locks.ReentrantLock;
 public class ZeroBlockingQueue<E> implements BlockingQueue<E> {
 
 	private final Lock lock = new ReentrantLock();
-	private final Condition notFull  = lock.newCondition(); 
-	private final Condition notEmpty = lock.newCondition(); 
+	private final Condition notFull  = this.lock.newCondition(); 
+	private final Condition notEmpty = this.lock.newCondition(); 
 	
 	private E value;
 
@@ -47,18 +47,18 @@ public class ZeroBlockingQueue<E> implements BlockingQueue<E> {
 	 * @see java.util.concurrent.BlockingQueue#put(java.lang.Object)
 	 */
 	public void put(E o) throws InterruptedException {
-		lock.lock();
+		this.lock.lock();
 		try {
-			while (value != null) {
-				notFull.await();
+			while (this.value != null) {
+				this.notFull.await();
 			}
 			this.value = o;
-			notEmpty.signal();
-			while (value != null) {
-				notFull.await();
+			this.notEmpty.signal();
+			while (this.value != null) {
+				this.notFull.await();
 			}
 		} finally {
-			lock.unlock();
+			this.lock.unlock();
 		}
 	}
 
@@ -68,16 +68,16 @@ public class ZeroBlockingQueue<E> implements BlockingQueue<E> {
 	 */
 	public E take() throws InterruptedException {
 		E o = null;
-		lock.lock();
+		this.lock.lock();
 		try {
-			while (value == null) {
-				notEmpty.await();
+			while (this.value == null) {
+				this.notEmpty.await();
 			}
 			o = this.value;
 			this.value = null;
-			notFull.signal();
+			this.notFull.signal();
 		} finally {
-			lock.unlock();
+			this.lock.unlock();
 		}
 		return o;
 	}

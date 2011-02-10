@@ -27,6 +27,7 @@ public class ThreadBasedActorFactory extends ActorFactory {
 	 * (non-Javadoc)
 	 * @see com.googlecode.acpj.actors.ActorFactory#createActor(java.lang.Runnable)
 	 */
+	@Override
 	public Actor createActor(Runnable runnable) {
 		return new ThreadBasedActor(runnable);
 	}
@@ -35,6 +36,7 @@ public class ThreadBasedActorFactory extends ActorFactory {
 	 * (non-Javadoc)
 	 * @see com.googlecode.acpj.actors.ActorFactory#createActor(java.lang.Runnable, java.lang.String)
 	 */
+	@Override
 	public Actor createActor(Runnable runnable, String name) {
 		return new ThreadBasedActor(runnable, name);
 	}
@@ -43,6 +45,7 @@ public class ThreadBasedActorFactory extends ActorFactory {
 	 * (non-Javadoc)
 	 * @see com.googlecode.acpj.actors.ActorFactory#getCurrentActor()
 	 */
+	@Override
 	public Actor getCurrentActor() {
 		return new ThreadBasedActor();
 	}

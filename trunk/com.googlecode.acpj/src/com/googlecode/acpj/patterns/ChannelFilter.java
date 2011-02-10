@@ -47,28 +47,28 @@ public class ChannelFilter<Tin, Tout> implements Runnable {
 	}
 	
 	public void run() {
-		readPort.claim();
-		writePort.claim();
+		this.readPort.claim();
+		this.writePort.claim();
 		Tin input = null;
 		Tout output = null;
 		boolean poisoned = false;
 		while (!poisoned) {
 			try {
-				input = readPort.read();
+				input = this.readPort.read();
 			} catch (ChannelPoisonedException e) {
-				if (propogatePoison) {
-					writePort.poison();
+				if (this.propogatePoison) {
+					this.writePort.poison();
 					poisoned = true;
 				}
 			}
 			if (!poisoned) {
-				output = filter.process(input);
+				output = this.filter.process(input);
 				if (output != null) {
 					try {
-						writePort.write(output);
+						this.writePort.write(output);
 					} catch (ChannelPoisonedException e) {
-						if (propogatePoison) {
-							readPort.poison();
+						if (this.propogatePoison) {
+							this.readPort.poison();
 							poisoned = true;
 						}
 					}

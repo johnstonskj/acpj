@@ -51,10 +51,10 @@ public class WatchdogService extends BasicService<ActorStateMessage> {
 	 */
 	@Override
 	public boolean handleRequest(ActorStateMessage request) {
-		if (loggerChannel == null) {
-			loggerChannel = ChannelRegistry.getInstance().lookupOrNull(LogService.CHANNEL_NAME);
-			if (loggerChannel != null) {
-				loggerPort = loggerChannel.getWritePort(true);
+		if (this.loggerChannel == null) {
+			this.loggerChannel = ChannelRegistry.getInstance().lookupOrNull(LogService.CHANNEL_NAME);
+			if (this.loggerChannel != null) {
+				this.loggerPort = this.loggerChannel.getWritePort(true);
 			}
 			try {
 				getReadPort().claim();
@@ -63,8 +63,8 @@ public class WatchdogService extends BasicService<ActorStateMessage> {
 			}
 		}
 		final String msg = String.format("%10s - %s", request.getActorState(), request.getActorName());
-		if (loggerPort != null) {
-			loggerPort.write(new LogRecord(Level.INFO, msg));
+		if (this.loggerPort != null) {
+			this.loggerPort.write(new LogRecord(Level.INFO, msg));
 		} else {
 			System.out.println(String.format("%10s - %s", request.getActorState(), request.getActorName()));
 		}

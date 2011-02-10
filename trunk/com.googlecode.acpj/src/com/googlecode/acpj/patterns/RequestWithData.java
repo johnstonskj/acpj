@@ -34,7 +34,7 @@ public class RequestWithData<DT, CT> extends Request<CT> {
 	}
 	
 	public DT getRequestData() {
-		return requestData;
+		return this.requestData;
 	}
 	
 }
