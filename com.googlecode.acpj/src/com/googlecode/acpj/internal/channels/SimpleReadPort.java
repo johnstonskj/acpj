@@ -46,7 +46,7 @@ public class SimpleReadPort<T> extends SimplePort<T> implements ReadPort<T> {
 			decrementLimit();
 		}
 		T value = this.channel.readValue();
-		if (value instanceof SimplePort) {
+		if (value instanceof SimplePort<?>) {
 			((SimplePort<?>)value).claim();
 		}
 		return value;

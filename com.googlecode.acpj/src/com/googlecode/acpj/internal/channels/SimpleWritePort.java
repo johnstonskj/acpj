@@ -45,7 +45,7 @@ public class SimpleWritePort<T> extends SimplePort<T> implements WritePort<T> {
 			}
 			decrementLimit();
 		}
-		if (value instanceof SimplePort) {
+		if (value instanceof SimplePort<?>) {
 			((SimplePort<?>)value).release();
 		}
 		this.channel.writeValue(value);
