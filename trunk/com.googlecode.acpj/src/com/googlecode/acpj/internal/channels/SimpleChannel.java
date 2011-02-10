@@ -228,7 +228,7 @@ public class SimpleChannel<T> implements BufferedChannel<T>, SimpleMonitoredChan
 	}
 	
 	public void closePort(Port<T> port) {
-		if (port instanceof ReadPort) {
+		if (port instanceof ReadPort<?>) {
 			readPorts.remove(port);
 		} else {
 			writePorts.remove(port);
@@ -294,7 +294,7 @@ public class SimpleChannel<T> implements BufferedChannel<T>, SimpleMonitoredChan
 	 */
 	@Override
 	public boolean equals(Object obj) {
-		if (!(obj instanceof SimpleChannel)) {
+		if (!(obj instanceof SimpleChannel<?>)) {
 			return false;
 		}
 		return this.id == ((SimpleChannel<?>)obj).id;
