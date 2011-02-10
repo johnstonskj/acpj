@@ -39,7 +39,7 @@ public class EndToEndTests extends TestCase {
 		}
 	}
 	
-	private class LoggerActor implements Runnable {
+	class LoggerActor implements Runnable {
 		public void run() {
 			BufferedChannel<LogRecord> logChannel = ChannelFactory.getInstance().createAnyToOneChannel("com.googlecode.acpj.logger", -1);
 			ChannelRegistry.getInstance().register(logChannel, "com.googlecode.acpj.logger", false);
@@ -56,7 +56,7 @@ public class EndToEndTests extends TestCase {
 		}		
 	}
 	
-	private class NumberGenerator implements Runnable {
+	class NumberGenerator implements Runnable {
 		private int id = 0;
 		public NumberGenerator(int id) {
 			this.id = id;
@@ -65,7 +65,7 @@ public class EndToEndTests extends TestCase {
 			Channel<LogRecord> logChannel = ChannelRegistry.getInstance().lookup("com.googlecode.acpj.logger");
 			WritePort<LogRecord> writePort = logChannel.getWritePort(true);
 			for (int i = 0; i < 10; i++) {
-				writePort.write(new LogRecord(1, String.format("A number, %d, from %d", i, id)));
+				writePort.write(new LogRecord(1, String.format("A number, %d, from %d", i, this.id)));
 			}
 		}
 	}

@@ -55,8 +55,8 @@ public class ExecutorBasedActor implements Actor, Runnable {
 	}
 	
 	public ExecutorBasedActor() {
-		id = -Thread.currentThread().getId();
-		name = Thread.currentThread().getName();
+		setLocalId(-Thread.currentThread().getId());
+		this.name = Thread.currentThread().getName();
 	}
 	
 	/*

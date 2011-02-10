@@ -93,7 +93,7 @@ public abstract class BasicService<RT> implements Runnable {
 	 * @return the channel name as used in the channel registry.
 	 */
 	public String getChannelName() {
-		return channelName;
+		return this.channelName;
 	}
 
 	/**
@@ -113,7 +113,7 @@ public abstract class BasicService<RT> implements Runnable {
 	 * @return the name of the service actor.
 	 */
 	public String getActorName() {
-		return actorName;
+		return this.actorName;
 	}
 
 	/**
@@ -156,19 +156,24 @@ public abstract class BasicService<RT> implements Runnable {
 	public Actor start() {
 		synchronized (this.serviceLock) {
 			if (this.serviceActor == null || !this.serviceActor.isRunning()) {
-				if (channelName == null) {
-					channelName = this.getClass().getCanonicalName();
+				if (this.channelName == null) {
+					this.channelName = this.getClass().getCanonicalName();
 				}
-				if (actorName == null) {
-					actorName = this.getClass().getCanonicalName();
+				if (this.actorName == null) {
+					this.actorName = this.getClass().getCanonicalName();
 				}
-				this.requestChannel = ChannelFactory.getInstance().createAnyToOneChannel(channelName, BufferedChannel.BUFFER_CAPACITY_UNLIMITED);
-				ChannelRegistry.getInstance().register(requestChannel, channelName, true);
-				this.requestPort = (ReadPort<RT>)requestChannel.getReadPort(false); 
-				serviceActor = ActorFactory.getInstance().createActor(this, actorName);
+				this.requestChannel = ChannelFactory.getInstance().createAnyToOneChannel(
+						this.channelName, 
+						BufferedChannel.BUFFER_CAPACITY_UNLIMITED);
+				ChannelRegistry.getInstance().register(
+						this.requestChannel, 
+						this.channelName, 
+						true);
+				this.requestPort = this.requestChannel.getReadPort(false); 
+				this.serviceActor = ActorFactory.getInstance().createActor(this, this.actorName);
 			}
 		}
-		return serviceActor;
+		return this.serviceActor;
 	}
 	
 	/**
@@ -177,7 +182,7 @@ public abstract class BasicService<RT> implements Runnable {
 	 * @return <code>true</code> if the service actor is running.
 	 */
 	public boolean isRunning() {
-		return (serviceActor != null || serviceActor.isRunning());
+		return (this.serviceActor != null || this.serviceActor.isRunning());
 	}
 	
 	/**
@@ -185,12 +190,12 @@ public abstract class BasicService<RT> implements Runnable {
 	 * currently running.
 	 */
 	public void stop() {
-		synchronized (serviceLock) {
-			if (serviceActor != null && serviceActor.isRunning()) {
-				ChannelRegistry.getInstance().deregister(channelName);
-				requestChannel.poison();
-				requestChannel = null;
-				serviceActor = null;
+		synchronized (this.serviceLock) {
+			if (this.serviceActor != null && this.serviceActor.isRunning()) {
+				ChannelRegistry.getInstance().deregister(this.channelName);
+				this.requestChannel.poison();
+				this.requestChannel = null;
+				this.serviceActor = null;
 			}
 		}
 	}

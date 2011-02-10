@@ -32,7 +32,7 @@ public class ActorStateMessage {
 	}
 	
 	public String getActorName() {
-		return actorName;
+		return this.actorName;
 	}
 	
 	public void setActorState(ActorState actorState) {
@@ -40,7 +40,7 @@ public class ActorStateMessage {
 	}
 	
 	public ActorState getActorState() {
-		return actorState;
+		return this.actorState;
 	}
 
 }

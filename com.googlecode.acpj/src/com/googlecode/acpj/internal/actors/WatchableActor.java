@@ -48,15 +48,15 @@ public class WatchableActor implements Runnable {
 		}
 		try {
 			if (watchdogPort != null) {
-				watchdogPort.write(new ActorStateMessage(actor.getName(), ActorState.STARTED));
+				watchdogPort.write(new ActorStateMessage(this.actor.getName(), ActorState.STARTED));
 			}
-			actual.run();
+			this.actual.run();
 			if (watchdogPort != null) {
-				watchdogPort.write(new ActorStateMessage(actor.getName(), ActorState.FINISHED));
+				watchdogPort.write(new ActorStateMessage(this.actor.getName(), ActorState.FINISHED));
 			}
 		} catch (Throwable t) {
 			if (watchdogPort != null) {
-				final String msg = String.format("%s (%s)", actor.getName(), t.toString());
+				final String msg = String.format("%s (%s)", this.actor.getName(), t.toString());
 				watchdogPort.write(new ActorStateMessage(msg, ActorState.DIED));
 			}
 		}

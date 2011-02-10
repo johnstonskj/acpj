@@ -41,6 +41,7 @@ public class DefaultChannelFactory extends ChannelFactory {
 	 * (non-Javadoc)
 	 * @see com.googlecode.acpj.channels.ChannelFactory#createAnyToAnyChannel()
 	 */
+	@Override
 	public <T> Channel<T> createAnyToAnyChannel() {
 		return createChannel(null, PortArity.ANY, PORT_LIMIT_UNLIMITED, PortArity.ANY, PORT_LIMIT_UNLIMITED);
 	}
@@ -49,6 +50,7 @@ public class DefaultChannelFactory extends ChannelFactory {
 	 * (non-Javadoc)
 	 * @see com.googlecode.acpj.channels.ChannelFactory#createAnyToAnyChannel(int)
 	 */
+	@Override
 	public <T> BufferedChannel<T> createAnyToAnyChannel(int capacity) {
 		return createChannel(null, PortArity.ANY, PORT_LIMIT_UNLIMITED, PortArity.ANY, PORT_LIMIT_UNLIMITED, capacity);
 	}
@@ -57,6 +59,7 @@ public class DefaultChannelFactory extends ChannelFactory {
 	 * (non-Javadoc)
 	 * @see com.googlecode.acpj.channels.ChannelFactory#createAnyToAnyChannel(java.lang.String)
 	 */
+	@Override
 	public <T> Channel<T> createAnyToAnyChannel(String name) throws IllegalArgumentException {
 		return createChannel(name, PortArity.ANY, PORT_LIMIT_UNLIMITED, PortArity.ANY, PORT_LIMIT_UNLIMITED);
 	}
@@ -65,6 +68,7 @@ public class DefaultChannelFactory extends ChannelFactory {
 	 * (non-Javadoc)
 	 * @see com.googlecode.acpj.channels.ChannelFactory#createAnyToAnyChannel(java.lang.String, int)
 	 */
+	@Override
 	public <T> BufferedChannel<T> createAnyToAnyChannel(String name, int capacity) throws IllegalArgumentException {
 		return createChannel(name, PortArity.ANY, PORT_LIMIT_UNLIMITED, PortArity.ANY, PORT_LIMIT_UNLIMITED, capacity);
 	}
@@ -73,6 +77,7 @@ public class DefaultChannelFactory extends ChannelFactory {
 	 * (non-Javadoc)
 	 * @see com.googlecode.acpj.channels.ChannelFactory#createAnyToAnyChannel(java.lang.String, int, int)
 	 */
+	@Override
 	public <T> Channel<T> createAnyToAnyChannel(String name, int readPortLimit, int writePortLimit) throws IllegalArgumentException {
 		return createChannel(name, PortArity.ANY, readPortLimit, PortArity.ANY, writePortLimit);
 	}
@@ -81,6 +86,7 @@ public class DefaultChannelFactory extends ChannelFactory {
 	 * (non-Javadoc)
 	 * @see com.googlecode.acpj.channels.ChannelFactory#createAnyToAnyChannel(java.lang.String, int, int, int)
 	 */
+	@Override
 	public <T> BufferedChannel<T> createAnyToAnyChannel(String name, int readPortLimit, int writePortLimit, int capacity) throws IllegalArgumentException {
 		return createChannel(name, PortArity.ANY, readPortLimit, PortArity.ANY, writePortLimit, capacity);
 	}
@@ -91,6 +97,7 @@ public class DefaultChannelFactory extends ChannelFactory {
 	 * (non-Javadoc)
 	 * @see com.googlecode.acpj.channels.ChannelFactory#createAnyToOneChannel()
 	 */
+	@Override
 	public <T> Channel<T> createAnyToOneChannel() {
 		return createChannel(null, PortArity.ONE, PORT_LIMIT_UNLIMITED, PortArity.ANY, PORT_LIMIT_UNLIMITED);
 	}
@@ -99,6 +106,7 @@ public class DefaultChannelFactory extends ChannelFactory {
 	 * (non-Javadoc)
 	 * @see com.googlecode.acpj.channels.ChannelFactory#createAnyToOneChannel(int)
 	 */
+	@Override
 	public <T> BufferedChannel<T> createAnyToOneChannel(int capacity) {
 		return createChannel(null, PortArity.ONE, PORT_LIMIT_UNLIMITED, PortArity.ANY, PORT_LIMIT_UNLIMITED, capacity);
 	}
@@ -107,6 +115,7 @@ public class DefaultChannelFactory extends ChannelFactory {
 	 * (non-Javadoc)
 	 * @see com.googlecode.acpj.channels.ChannelFactory#createAnyToOneChannel(java.lang.String)
 	 */
+	@Override
 	public <T> Channel<T> createAnyToOneChannel(String name) throws IllegalArgumentException {
 		return createChannel(name, PortArity.ONE, PORT_LIMIT_UNLIMITED, PortArity.ANY, PORT_LIMIT_UNLIMITED);
 	}
@@ -115,6 +124,7 @@ public class DefaultChannelFactory extends ChannelFactory {
 	 * (non-Javadoc)
 	 * @see com.googlecode.acpj.channels.ChannelFactory#createAnyToOneChannel(java.lang.String, int)
 	 */
+	@Override
 	public <T> BufferedChannel<T> createAnyToOneChannel(String name, int capacity) throws IllegalArgumentException {
 		return createChannel(name, PortArity.ONE, PORT_LIMIT_UNLIMITED, PortArity.ANY, PORT_LIMIT_UNLIMITED, capacity);
 	}
@@ -123,6 +133,7 @@ public class DefaultChannelFactory extends ChannelFactory {
 	 * (non-Javadoc)
 	 * @see com.googlecode.acpj.channels.ChannelFactory#createAnyToOneChannel(java.lang.String, int, int)
 	 */
+	@Override
 	public <T> Channel<T> createAnyToOneChannel(String name, int readPortLimit, int writePortLimit) throws IllegalArgumentException {
 		return createChannel(name, PortArity.ONE, readPortLimit, PortArity.ANY, writePortLimit);
 	}
@@ -131,6 +142,7 @@ public class DefaultChannelFactory extends ChannelFactory {
 	 * (non-Javadoc)
 	 * @see com.googlecode.acpj.channels.ChannelFactory#createAnyToOneChannel(java.lang.String, int, int, int)
 	 */
+	@Override
 	public <T> BufferedChannel<T> createAnyToOneChannel(String name, int readPortLimit, int writePortLimit, int capacity) throws IllegalArgumentException {
 		return createChannel(name, PortArity.ONE, readPortLimit, PortArity.ANY, writePortLimit, capacity);
 	}
@@ -141,6 +153,7 @@ public class DefaultChannelFactory extends ChannelFactory {
 	 * (non-Javadoc)
 	 * @see com.googlecode.acpj.channels.ChannelFactory#createOneToAnyChannel()
 	 */
+	@Override
 	public <T> Channel<T> createOneToAnyChannel() {
 		return createChannel(null, PortArity.ANY, PORT_LIMIT_UNLIMITED, PortArity.ONE, PORT_LIMIT_UNLIMITED);
 	}
@@ -149,6 +162,7 @@ public class DefaultChannelFactory extends ChannelFactory {
 	 * (non-Javadoc)
 	 * @see com.googlecode.acpj.channels.ChannelFactory#createOneToAnyChannel(int)
 	 */
+	@Override
 	public <T> BufferedChannel<T> createOneToAnyChannel(int capacity) {
 		return createChannel(null, PortArity.ANY, PORT_LIMIT_UNLIMITED, PortArity.ONE, PORT_LIMIT_UNLIMITED, capacity);
 	}
@@ -157,6 +171,7 @@ public class DefaultChannelFactory extends ChannelFactory {
 	 * (non-Javadoc)
 	 * @see com.googlecode.acpj.channels.ChannelFactory#createOneToAnyChannel(java.lang.String)
 	 */
+	@Override
 	public <T> Channel<T> createOneToAnyChannel(String name) throws IllegalArgumentException {
 		return createChannel(name, PortArity.ANY, PORT_LIMIT_UNLIMITED, PortArity.ONE, PORT_LIMIT_UNLIMITED);
 	}
@@ -165,6 +180,7 @@ public class DefaultChannelFactory extends ChannelFactory {
 	 * (non-Javadoc)
 	 * @see com.googlecode.acpj.channels.ChannelFactory#createOneToAnyChannel(java.lang.String, int)
 	 */
+	@Override
 	public <T> BufferedChannel<T> createOneToAnyChannel(String name, int capacity) throws IllegalArgumentException {
 		return createChannel(name, PortArity.ANY, PORT_LIMIT_UNLIMITED, PortArity.ONE, PORT_LIMIT_UNLIMITED, capacity);
 	}
@@ -173,6 +189,7 @@ public class DefaultChannelFactory extends ChannelFactory {
 	 * (non-Javadoc)
 	 * @see com.googlecode.acpj.channels.ChannelFactory#createOneToAnyChannel(java.lang.String, int, int)
 	 */
+	@Override
 	public <T> Channel<T> createOneToAnyChannel(String name, int readPortLimit, int writePortLimit) throws IllegalArgumentException {
 		return createChannel(name, PortArity.ANY, readPortLimit, PortArity.ONE, writePortLimit);
 	}
@@ -181,6 +198,7 @@ public class DefaultChannelFactory extends ChannelFactory {
 	 * (non-Javadoc)
 	 * @see com.googlecode.acpj.channels.ChannelFactory#createOneToAnyChannel(java.lang.String, int, int, int)
 	 */
+	@Override
 	public <T> BufferedChannel<T> createOneToAnyChannel(String name, int readPortLimit, int writePortLimit, int capacity) throws IllegalArgumentException {
 		return createChannel(name, PortArity.ANY, readPortLimit, PortArity.ONE, writePortLimit, capacity);
 	}
@@ -190,6 +208,7 @@ public class DefaultChannelFactory extends ChannelFactory {
 	 * (non-Javadoc)
 	 * @see com.googlecode.acpj.channels.ChannelFactory#createOneToOneChannel()
 	 */
+	@Override
 	public <T> Channel<T> createOneToOneChannel() {
 		return createChannel(null, PortArity.ONE, PORT_LIMIT_UNLIMITED, PortArity.ONE, PORT_LIMIT_UNLIMITED);
 	}
@@ -198,6 +217,7 @@ public class DefaultChannelFactory extends ChannelFactory {
 	 * (non-Javadoc)
 	 * @see com.googlecode.acpj.channels.ChannelFactory#createOneToOneChannel(int)
 	 */
+	@Override
 	public <T> BufferedChannel<T> createOneToOneChannel(int capacity) {
 		return createChannel(null, PortArity.ONE, PORT_LIMIT_UNLIMITED, PortArity.ONE, PORT_LIMIT_UNLIMITED, capacity);
 	}
@@ -206,6 +226,7 @@ public class DefaultChannelFactory extends ChannelFactory {
 	 * (non-Javadoc)
 	 * @see com.googlecode.acpj.channels.ChannelFactory#createOneToOneChannel(java.lang.String)
 	 */
+	@Override
 	public <T> Channel<T> createOneToOneChannel(String name) throws IllegalArgumentException {
 		return createChannel(name, PortArity.ONE, PORT_LIMIT_UNLIMITED, PortArity.ONE, PORT_LIMIT_UNLIMITED);
 	}
@@ -214,6 +235,7 @@ public class DefaultChannelFactory extends ChannelFactory {
 	 * (non-Javadoc)
 	 * @see com.googlecode.acpj.channels.ChannelFactory#createOneToOneChannel(java.lang.String, int)
 	 */
+	@Override
 	public <T> BufferedChannel<T> createOneToOneChannel(String name, int capacity) throws IllegalArgumentException {
 		return createChannel(name, PortArity.ONE, PORT_LIMIT_UNLIMITED, PortArity.ONE, PORT_LIMIT_UNLIMITED, capacity);
 	}
@@ -222,6 +244,7 @@ public class DefaultChannelFactory extends ChannelFactory {
 	 * (non-Javadoc)
 	 * @see com.googlecode.acpj.channels.ChannelFactory#createOneToOneChannel(java.lang.String, int, int)
 	 */
+	@Override
 	public <T> Channel<T> createOneToOneChannel(String name, int readPortLimit, int writePortLimit) throws IllegalArgumentException {
 		return createChannel(name, PortArity.ONE, readPortLimit, PortArity.ONE, writePortLimit);
 	}
@@ -230,6 +253,7 @@ public class DefaultChannelFactory extends ChannelFactory {
 	 * (non-Javadoc)
 	 * @see com.googlecode.acpj.channels.ChannelFactory#createOneToOneChannel(java.lang.String, int, int, int)
 	 */
+	@Override
 	public <T> BufferedChannel<T> createOneToOneChannel(String name, int readPortLimit, int writePortLimit, int capacity) throws IllegalArgumentException {
 		return createChannel(name, PortArity.ONE, readPortLimit, PortArity.ONE, writePortLimit, capacity);
 	}
@@ -239,6 +263,7 @@ public class DefaultChannelFactory extends ChannelFactory {
 	 * (non-Javadoc)
 	 * @see com.googlecode.acpj.channels.ChannelFactory#createChannel(java.lang.String, com.googlecode.acpj.channels.PortArity, int, com.googlecode.acpj.channels.PortArity, int)
 	 */
+	@Override
 	public <T> Channel<T> createChannel(String name, PortArity readPortArity, int readPortLimit, PortArity writePortArity, int writePortLimit) throws IllegalArgumentException {
 		SimpleChannel<T> channel = new SimpleChannel<T>(name, readPortArity, readPortLimit, writePortArity, writePortLimit, 0);
 		if (monitorChannels) {
@@ -251,6 +276,7 @@ public class DefaultChannelFactory extends ChannelFactory {
 	 * (non-Javadoc)
 	 * @see com.googlecode.acpj.channels.ChannelFactory#createChannel(java.lang.String, com.googlecode.acpj.channels.PortArity, int, com.googlecode.acpj.channels.PortArity, int, int)
 	 */
+	@Override
 	public <T> BufferedChannel<T> createChannel(String name, PortArity readPortArity, int readPortLimit, PortArity writePortArity, int writePortLimit, int capacity) throws IllegalArgumentException {
 		SimpleChannel<T> channel = new SimpleChannel<T>(name, readPortArity, readPortLimit, writePortArity, writePortLimit, capacity);
 		if (monitorChannels) {
@@ -276,6 +302,8 @@ public class DefaultChannelFactory extends ChannelFactory {
 	 * (non-Javadoc)
 	 * @see com.googlecode.acpj.channels.ChannelFactory#getChannelMonitor()
 	 */
+	@Override
+	@SuppressWarnings("synthetic-access")
 	public ChannelMonitor getChannelMonitor() {
 		if (monitorChannels) {
 			return new SimpleChannelMonitor();

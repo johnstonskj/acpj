@@ -38,7 +38,7 @@ public class BasicActorJoinPool implements ActorJoinPool {
 		public void run() {
 			try {
 				this.completionWritePort.claim();
-				actual.run();
+				this.actual.run();
 			} finally {
 				this.completionWritePort.write(true);
 				this.completionWritePort.close();
@@ -56,7 +56,7 @@ public class BasicActorJoinPool implements ActorJoinPool {
 				ChannelFactory.PORT_LIMIT_UNLIMITED, // read port limit 
 				1, // write port limit
 				BufferedChannel.BUFFER_CAPACITY_UNLIMITED); 
-		this.completionReadPort = completetionChannel.getReadPort(true);
+		this.completionReadPort = this.completetionChannel.getReadPort(true);
 	}
 	
 	/*
@@ -75,8 +75,8 @@ public class BasicActorJoinPool implements ActorJoinPool {
 		if (this.actorCount == -1) {
 			throw new IllegalStateException("This pool has already been joined.");
 		}
-		factory.createActor(new ActorWrapper(runnable, completetionChannel.getWritePort(false)));
-		actorCount++;
+		factory.createActor(new ActorWrapper(runnable, this.completetionChannel.getWritePort(false)));
+		this.actorCount++;
 	}
 
 	/*

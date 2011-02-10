@@ -33,7 +33,7 @@ public class Request<CT> {
 	}
 	
 	public WritePort<CT> getCallbackPort() {
-		return callbackPort;
+		return this.callbackPort;
 	}
 }
 
